@@ -32,7 +32,7 @@
           },
           {
             "group": "Endpoints",
-            "pages": ["api-reference/heartbeat"]
+            "pages": ["api-reference/monitors", "api-reference/alert-channels", "api-reference/status-pages", "api-reference/heartbeat"]
           }
         ]
       }

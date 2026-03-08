@@ -1,0 +1,114 @@
+---
+title: "Alert channels"
+description: "Create, list, update, and delete alert channels"
+---
+
+Requires an API key with `alert_channels` permission.
+
+## List alert channels
+
+```bash
+GET /api/v1/alert-channels
+```
+
+Returns all alert channels in the organization.
+
+```bash
+curl https://app.larm.dev/api/v1/alert-channels \
+  -H "Authorization: Bearer larm_api_..."
+```
+
+```json 200
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "name": "Engineering Slack",
+      "type": "slack",
+      "enabled": true,
+      "default_for_new_monitors": true,
+      "config": {
+        "webhook_url": "https://hooks.slack.com/services/T.../B.../..."
+      },
+      "broken_at": null,
+      "broken_reason": null,
+      "created_at": "2025-03-01T12:00:00Z",
+      "updated_at": "2025-03-01T12:00:00Z"
+    }
+  ]
+}
+```
+
+## Get alert channel
+
+```bash
+GET /api/v1/alert-channels/:id
+```
+
+```bash
+curl https://app.larm.dev/api/v1/alert-channels/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer larm_api_..."
+```
+
+## Create alert channel
+
+Requires `read_write` permission.
+
+```bash
+POST /api/v1/alert-channels
+```
+
+```bash
+curl -X POST https://app.larm.dev/api/v1/alert-channels \
+  -H "Authorization: Bearer larm_api_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Engineering Slack",
+    "type": "slack",
+    "config": {
+      "webhook_url": "https://hooks.slack.com/services/T.../B.../..."
+    }
+  }'
+```
+
+### Parameters
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | Yes | Channel name (1–255 characters) |
+| `type` | Yes | `slack`, `discord`, `email`, `webhook`, `pagerduty`, `teams`, `grafana_irm`, `incident_io`, or `mattermost` |
+| `config` | Yes | Type-specific configuration (see [Alert channels](/alert-channels)) |
+| `enabled` | No | Whether the channel is active (default: true) |
+| `default_for_new_monitors` | No | Auto-link to new monitors (default: true) |
+
+## Update alert channel
+
+Requires `read_write` permission.
+
+```bash
+PATCH /api/v1/alert-channels/:id
+```
+
+```bash
+curl -X PATCH https://app.larm.dev/api/v1/alert-channels/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer larm_api_..." \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Ops Slack", "default_for_new_monitors": false}'
+```
+
+Accepts the same parameters as create. Only include the fields you want to change.
+
+## Delete alert channel
+
+Requires `read_write` permission.
+
+```bash
+DELETE /api/v1/alert-channels/:id
+```
+
+```bash
+curl -X DELETE https://app.larm.dev/api/v1/alert-channels/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer larm_api_..."
+```
+
+Returns `204 No Content` on success.

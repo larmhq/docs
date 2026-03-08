@@ -79,10 +79,4 @@ All errors return a consistent JSON structure:
 | 403 | `insufficient_permissions` | API key lacks the required permission |
 | 429 | `rate_limited` | Too many requests — check `retry-after` header |
 
-## REST endpoints
-
-<Note>
-  REST endpoints for managing monitors, alert channels, and status pages are coming soon. The API key infrastructure is ready — endpoints will be added in a future release.
-</Note>
-
-The [heartbeat endpoint](/api-reference/heartbeat) is available now and uses token-based authentication (no API key needed).
+The [heartbeat endpoint](/api-reference/heartbeat) uses token-based authentication (no API key needed). All other endpoints require an API key.
