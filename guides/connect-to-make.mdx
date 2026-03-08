@@ -1,0 +1,57 @@
+---
+title: "Connect to Make"
+description: "Send Larm alerts to Make for workflow automation"
+---
+
+Make (formerly Integromat) can receive Larm alerts via the webhook alert channel using a Custom Webhook module.
+
+## Setup
+
+### 1. Create a scenario with a Custom Webhook
+
+In Make, create a new scenario. Add a **Webhooks** → **Custom webhook** module as the trigger. Click **Add** to create a new webhook, give it a name, and copy the URL.
+
+### 2. Create a webhook alert channel in Larm
+
+In Larm, go to **Alert channels** and click **New alert channel**. Select **Webhook** as the type and paste the Make webhook URL.
+
+### 3. Set a custom payload template
+
+Set a structured payload template so Make can parse each field individually:
+
+```json
+{
+  "event": "{{event}}",
+  "status": "{{status}}",
+  "monitor_name": "{{monitor_name}}",
+  "monitor_url": "{{monitor_url}}",
+  "timestamp": "{{timestamp}}",
+  "last_error": "{{last_error}}",
+  "downtime_duration": "{{downtime_duration}}"
+}
+```
+
+See [Webhooks](/webhooks#template-variables) for all available variables.
+
+### 4. Determine data structure
+
+In Make, click **Determine data structure** on the Custom Webhook module. Then in Larm, click **Send test** on the alert channel. Make will receive the test event and learn the payload structure automatically.
+
+### 5. Add downstream modules
+
+Add modules after the webhook trigger to process the alert.
+
+## Example: Log alerts to Google Sheets
+
+1. Follow the setup above to create the webhook trigger
+2. Add a **Google Sheets** → **Add a Row** module
+3. Connect your Google account and select a spreadsheet
+4. Map columns to webhook fields:
+   - **A**: `timestamp`
+   - **B**: `monitor_name`
+   - **C**: `status`
+   - **D**: `monitor_url`
+   - **E**: `last_error`
+5. Turn on the scenario
+
+Every Larm alert will be logged as a new row in your spreadsheet.

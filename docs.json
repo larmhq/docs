@@ -19,7 +19,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["index", "quickstart", "monitors", "alert-channels", "status-pages"]
+            "pages": ["index", "quickstart", "monitors", "alert-channels", "webhooks", "status-pages"]
+          },
+          {
+            "group": "Guides",
+            "pages": ["guides/connect-to-zapier", "guides/connect-to-n8n", "guides/connect-to-make"]
           }
         ]
       },

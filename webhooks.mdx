@@ -1,0 +1,149 @@
+---
+title: "Webhooks"
+description: "Payload format, template variables, and signature verification"
+---
+
+The webhook alert channel POSTs a JSON payload to any HTTPS URL when a monitor changes state. This page covers the payload format, available template variables, and how to verify webhook signatures.
+
+For setup instructions, see [Alert channels — Webhook](/alert-channels#webhook).
+
+## Events
+
+| Event | Description |
+|---|---|
+| `monitor_down` | A monitor has been confirmed down |
+| `monitor_recovered` | A monitor is back up |
+| `cert_expiring` | An SSL certificate is nearing expiry |
+| `test` | A manual test alert sent from the dashboard |
+
+## Default payload
+
+Without a custom template, Larm sends:
+
+```json
+{
+  "text": "{{monitor_name}} is {{status}}.{{last_error}}{{downtime_duration}}\nURL: {{monitor_url}}\nTime: {{timestamp}}"
+}
+```
+
+Which produces something like:
+
+```json
+{
+  "text": "My API is down. Connection timeout\nURL: https://api.example.com\nTime: 2024-01-15 14:30:45 UTC"
+}
+```
+
+This is a single `text` field. If you need structured data (e.g. for automation platforms), use a custom payload template.
+
+## Template variables
+
+Variables use `{{variable}}` syntax. Unknown variables are replaced with an empty string.
+
+| Variable | Description | Availability |
+|---|---|---|
+| `event` | Event type (`monitor_down`, `monitor_recovered`, `cert_expiring`, `test`) | All events |
+| `status` | Status string (`down`, `up`, `warning`, `test`) | All events |
+| `monitor_id` | Monitor UUID | All events |
+| `monitor_name` | Monitor name | All events |
+| `monitor_url` | URL or host from monitor config | All events |
+| `channel_name` | Alert channel name | All events |
+| `timestamp` | Timestamp in `2024-01-15 14:30:45 UTC` format | All events |
+| `last_error` | Error message (prefixed with a space) | `monitor_down` only |
+| `downtime_duration` | e.g. `" Was down for 5m 30s."` (prefixed with a space) | `monitor_recovered` only |
+| `cert_expiry_date` | Certificate expiry date in `2024-12-31` format | `cert_expiring` only |
+| `days_remaining` | Days until certificate expiry (as string) | `cert_expiring` only |
+
+<Note>
+  `last_error` and `downtime_duration` include a leading space so they read naturally in the default template. When using a custom template, you may want to trim them.
+</Note>
+
+## Custom payload templates
+
+Set a custom payload template in the alert channel config to control the JSON structure. The template must be valid JSON with `{{variable}}` placeholders.
+
+Recommended template for automation platforms:
+
+```json
+{
+  "event": "{{event}}",
+  "status": "{{status}}",
+  "monitor_id": "{{monitor_id}}",
+  "monitor_name": "{{monitor_name}}",
+  "monitor_url": "{{monitor_url}}",
+  "channel_name": "{{channel_name}}",
+  "timestamp": "{{timestamp}}",
+  "last_error": "{{last_error}}",
+  "downtime_duration": "{{downtime_duration}}",
+  "cert_expiry_date": "{{cert_expiry_date}}",
+  "days_remaining": "{{days_remaining}}"
+}
+```
+
+Event-specific variables are empty strings when not applicable.
+
+## Signature verification
+
+If you set a signing secret on the alert channel, Larm includes an `x-larm-signature-256` header with each request. The value is `sha256=` followed by the hex-encoded HMAC-SHA256 of the raw JSON body using your signing secret as the key.
+
+### Node.js
+
+```js
+const crypto = require("crypto");
+
+function verifySignature(body, secret, signatureHeader) {
+  const expected =
+    "sha256=" + crypto.createHmac("sha256", secret).update(body).digest("hex");
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signatureHeader)
+  );
+}
+
+// In your request handler:
+const signature = req.headers["x-larm-signature-256"];
+const isValid = verifySignature(req.rawBody, process.env.LARM_SECRET, signature);
+```
+
+### Python
+
+```python
+import hashlib
+import hmac
+
+def verify_signature(body: bytes, secret: str, signature_header: str) -> bool:
+    expected = "sha256=" + hmac.new(
+        secret.encode(), body, hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(expected, signature_header)
+
+# In your request handler:
+signature = request.headers.get("x-larm-signature-256")
+is_valid = verify_signature(request.body, os.environ["LARM_SECRET"], signature)
+```
+
+### curl
+
+To compute the expected signature for testing:
+
+```bash
+echo -n '{"event":"test"}' | openssl dgst -sha256 -hmac "your-secret" | awk '{print "sha256="$2}'
+```
+
+## Headers
+
+Every webhook request includes:
+
+| Header | Value |
+|---|---|
+| `content-type` | `application/json` |
+| `user-agent` | `Larm/1.0` |
+| `x-larm-signature-256` | `sha256={hex}` (only if signing secret is set) |
+
+Custom headers set in the alert channel config are included as-is.
+
+## Retries
+
+Failed deliveries are retried up to 3 times with exponential backoff.
+
+A `401` or `403` response is treated as a permanent failure — the delivery is not retried and the alert channel is automatically disabled. You'll receive an email notification and can re-enable the channel from the dashboard after fixing the issue.

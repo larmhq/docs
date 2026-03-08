@@ -47,6 +47,8 @@ POSTs a JSON payload to any HTTPS URL. Use this to integrate with services Larm 
 | **Headers** | No | Custom HTTP headers to include with the request |
 | **Payload template** | No | Custom JSON template with variable interpolation |
 
+See [Webhooks](/webhooks) for payload format, template variables, and signature verification.
+
 ## PagerDuty
 
 Triggers and resolves incidents via the PagerDuty Events API v2.
@@ -74,6 +76,16 @@ Creates and resolves alerts in Grafana OnCall via the Formatted Webhook integrat
 | **Integration URL** | Grafana OnCall Formatted Webhook integration URL |
 
 When a monitor goes down, Larm creates an alert in Grafana OnCall. When it recovers, the alert is automatically resolved using a stable dedup key.
+
+## ilert
+
+Creates and resolves alerts via the ilert Events API. ilert is an EU-native incident management platform based in Cologne, Germany.
+
+| Field | Description |
+|---|---|
+| **API key** | ilert alert source API key |
+
+When a monitor goes down, Larm creates a HIGH-priority alert in ilert. When it recovers, the alert is automatically resolved using a stable dedup key. Certificate expiry and test alerts are created with LOW priority.
 
 ## incident.io
 

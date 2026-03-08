@@ -1,0 +1,55 @@
+---
+title: "Connect to Zapier"
+description: "Send Larm alerts to Zapier for workflow automation"
+---
+
+Zapier can receive Larm alerts via the webhook alert channel. No custom Zapier app needed — use the built-in "Webhooks by Zapier" trigger.
+
+## Setup
+
+### 1. Create a Zap
+
+In Zapier, create a new Zap. For the trigger, choose **Webhooks by Zapier** and select **Catch Hook**. Click **Continue** — no filtering needed.
+
+Copy the webhook URL Zapier gives you (starts with `https://hooks.zapier.com/`).
+
+### 2. Create a webhook alert channel in Larm
+
+In Larm, go to **Alert channels** and click **New alert channel**. Select **Webhook** as the type and paste the Zapier URL.
+
+### 3. Set a custom payload template
+
+The default payload puts everything in a single `text` field, which is hard to work with in Zapier. Set a custom payload template so each field is available separately:
+
+```json
+{
+  "event": "{{event}}",
+  "status": "{{status}}",
+  "monitor_name": "{{monitor_name}}",
+  "monitor_url": "{{monitor_url}}",
+  "timestamp": "{{timestamp}}",
+  "last_error": "{{last_error}}",
+  "downtime_duration": "{{downtime_duration}}"
+}
+```
+
+See [Webhooks](/webhooks#template-variables) for all available variables.
+
+### 4. Send a test alert
+
+Click **Send test** on the alert channel in Larm. Then go back to Zapier and click **Test trigger** — it should pick up the test event and show the fields.
+
+### 5. Add an action
+
+Configure your Zap's action step. You can map the individual fields (e.g. `monitor_name`, `status`) to your action's inputs.
+
+## Example: Send alerts to a Slack channel
+
+1. Follow the setup above to create the Zapier trigger
+2. Add an action: **Slack** → **Send Channel Message**
+3. Map the fields:
+   - **Channel**: pick your alerts channel
+   - **Message Text**: `{{monitor_name}} is {{status}} — {{monitor_url}}`
+4. Turn on the Zap
+
+Every Larm alert will now post to your Slack channel through Zapier, where you can add formatting, filters, or additional actions.

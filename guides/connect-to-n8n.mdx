@@ -1,0 +1,60 @@
+---
+title: "Connect to n8n"
+description: "Send Larm alerts to n8n for workflow automation"
+---
+
+n8n can receive Larm alerts via the webhook alert channel using a Webhook trigger node.
+
+## Setup
+
+### 1. Add a Webhook node in n8n
+
+Create a new workflow in n8n. Add a **Webhook** node as the trigger. Set the HTTP method to **POST**.
+
+Copy the **production URL** (not the test URL). It looks like `https://your-n8n.example.com/webhook/...`.
+
+<Note>
+  n8n has separate test and production URLs. Use the production URL in Larm — the test URL only works while the workflow editor is open.
+</Note>
+
+### 2. Create a webhook alert channel in Larm
+
+In Larm, go to **Alert channels** and click **New alert channel**. Select **Webhook** as the type and paste the n8n production URL.
+
+### 3. Set a custom payload template
+
+Set a structured payload template so each field is available as a separate property in n8n:
+
+```json
+{
+  "event": "{{event}}",
+  "status": "{{status}}",
+  "monitor_name": "{{monitor_name}}",
+  "monitor_url": "{{monitor_url}}",
+  "timestamp": "{{timestamp}}",
+  "last_error": "{{last_error}}",
+  "downtime_duration": "{{downtime_duration}}"
+}
+```
+
+See [Webhooks](/webhooks#template-variables) for all available variables.
+
+### 4. Send a test alert
+
+Activate the workflow in n8n, then click **Send test** on the alert channel in Larm. Check the n8n execution log to confirm the event was received.
+
+### 5. Add downstream nodes
+
+Add nodes after the Webhook trigger to process the alert — send a message, create a ticket, update a spreadsheet, or anything else n8n supports.
+
+## Example: Create a Jira ticket when a monitor goes down
+
+1. Follow the setup above to create the Webhook trigger
+2. Add an **If** node: check that `event` equals `monitor_down`
+3. Add a **Jira** node on the true branch: **Create Issue**
+4. Map the fields:
+   - **Summary**: `[DOWN] {{monitor_name}}`
+   - **Description**: `{{monitor_url}} went down at {{timestamp}}. Error: {{last_error}}`
+5. Activate the workflow
+
+Larm will create a Jira ticket each time a monitor goes down.
