@@ -1,0 +1,17 @@
+---
+title: "Delete status page"
+authMethod: "bearer"
+api: "DELETE /api/v1/status-pages/{id}"
+description: "Deletes a status page"
+---
+
+Requires `status_pages:read_write` permission.
+
+<ParamField path="id" type="string" required>
+  Status page ID (UUID)
+</ParamField>
+
+<ResponseExample>
+```json 204
+```
+</ResponseExample>

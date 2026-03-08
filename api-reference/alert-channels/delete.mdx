@@ -1,0 +1,17 @@
+---
+title: "Delete alert channel"
+authMethod: "bearer"
+api: "DELETE /api/v1/alert-channels/{id}"
+description: "Deletes an alert channel"
+---
+
+Requires `alert_channels:read_write` permission.
+
+<ParamField path="id" type="string" required>
+  Alert channel ID (UUID)
+</ParamField>
+
+<ResponseExample>
+```json 204
+```
+</ResponseExample>

@@ -4,6 +4,10 @@ description: "Monitor cron jobs, scheduled tasks, and background workers"
 api: "GET /api/heartbeat/{token}"
 ---
 
+<ParamField path="token" type="string" required>
+  Heartbeat monitor token, found in monitor settings
+</ParamField>
+
 Heartbeat monitors work by expecting a periodic ping. If the ping stops arriving within the configured interval, Larm marks the monitor as down and fires alerts.
 
 ## Endpoint

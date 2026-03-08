@@ -1,0 +1,62 @@
+---
+title: "Update status page"
+authMethod: "bearer"
+api: "PATCH /api/v1/status-pages/{id}"
+description: "Updates an existing status page"
+---
+
+Requires `status_pages:read_write` permission. Only include the fields you want to change.
+
+<ParamField path="id" type="string" required>
+  Status page ID (UUID)
+</ParamField>
+
+<ParamField body="name" type="string">
+  Page name (1–255 characters)
+</ParamField>
+
+<ParamField body="slug" type="string">
+  URL identifier (3–63 characters, lowercase alphanumeric and hyphens)
+</ParamField>
+
+<ParamField body="description" type="string">
+  Brief description (up to 1000 characters)
+</ParamField>
+
+<ParamField body="theme" type="string">
+  `system`, `light`, or `dark`
+</ParamField>
+
+<ParamField body="primary_color" type="string">
+  Brand color in hex format (e.g. `#4F46E5`)
+</ParamField>
+
+<ParamField body="enabled" type="boolean">
+  Whether the page is publicly visible
+</ParamField>
+
+<ParamField body="subscribers_enabled" type="boolean">
+  Allow email subscriptions
+</ParamField>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Acme Status",
+    "slug": "acme",
+    "description": "Current status of Acme services",
+    "theme": "dark",
+    "primary_color": "#4F46E5",
+    "enabled": true,
+    "subscribers_enabled": true,
+    "custom_domain": null,
+    "domain_status": "none",
+    "url": "https://acme.status.larm.dev",
+    "created_at": "2025-03-01T12:00:00Z",
+    "updated_at": "2025-03-01T14:30:00Z"
+  }
+}
+```
+</ResponseExample>

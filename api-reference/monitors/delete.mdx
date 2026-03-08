@@ -1,0 +1,17 @@
+---
+title: "Delete monitor"
+authMethod: "bearer"
+api: "DELETE /api/v1/monitors/{id}"
+description: "Deletes a monitor"
+---
+
+Requires `monitors:read_write` permission.
+
+<ParamField path="id" type="string" required>
+  Monitor ID (UUID)
+</ParamField>
+
+<ResponseExample>
+```json 204
+```
+</ResponseExample>

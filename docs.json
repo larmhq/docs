@@ -31,12 +31,47 @@
             "pages": ["api-reference/introduction"]
           },
           {
-            "group": "Endpoints",
-            "pages": ["api-reference/monitors", "api-reference/alert-channels", "api-reference/status-pages", "api-reference/heartbeat"]
+            "group": "Monitors",
+            "pages": [
+              "api-reference/monitors/list",
+              "api-reference/monitors/get",
+              "api-reference/monitors/create",
+              "api-reference/monitors/update",
+              "api-reference/monitors/delete"
+            ]
+          },
+          {
+            "group": "Alert channels",
+            "pages": [
+              "api-reference/alert-channels/list",
+              "api-reference/alert-channels/get",
+              "api-reference/alert-channels/create",
+              "api-reference/alert-channels/update",
+              "api-reference/alert-channels/delete"
+            ]
+          },
+          {
+            "group": "Status pages",
+            "pages": [
+              "api-reference/status-pages/list",
+              "api-reference/status-pages/get",
+              "api-reference/status-pages/create",
+              "api-reference/status-pages/update",
+              "api-reference/status-pages/delete"
+            ]
+          },
+          {
+            "group": "Heartbeat",
+            "pages": ["api-reference/heartbeat"]
           }
         ]
       }
     ]
+  },
+  "api": {
+    "mdx": {
+      "server": "https://app.larm.dev"
+    }
   },
   "navbar": {
     "links": [
