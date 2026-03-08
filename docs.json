@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Larm",
   "colors": {
-    "primary": "#E85545",
-    "light": "#F06B5D",
-    "dark": "#C94438"
+    "primary": "#DC2828",
+    "light": "#EF4444",
+    "dark": "#B41D1D"
   },
   "favicon": "/favicon.svg",
   "logo": {
