@@ -96,6 +96,36 @@ Posts a formatted message to a Mattermost channel via an incoming webhook.
 | **Channel** | No | Override the webhook's default channel |
 | **Username** | No | Override the webhook's default bot username |
 
+## Pushover
+
+Sends push notifications to your devices via Pushover.
+
+| Field | Description |
+|---|---|
+| **User/group key** | Your Pushover user key or delivery group key |
+| **API token** | Application API token from your Pushover dashboard |
+
+## ntfy
+
+Sends notifications via [ntfy](https://ntfy.sh), a simple pub/sub notification service. Works with the public ntfy.sh instance or your own self-hosted server.
+
+| Field | Required | Description |
+|---|---|---|
+| **Server URL** | Yes | ntfy server URL (e.g. `https://ntfy.sh`) |
+| **Topic** | Yes | Topic name to publish to |
+| **Access token** | No | Required for authenticated ntfy servers |
+
+## Telegram
+
+Sends messages to a Telegram chat via the Bot API. You provide your own bot (created via [@BotFather](https://t.me/BotFather)) and a chat ID.
+
+| Field | Description |
+|---|---|
+| **Bot token** | Bot API token from BotFather (format: `123456789:ABCdef...`) |
+| **Chat ID** | Numeric chat/group ID (e.g. `-1001234567890`) or `@username` |
+
+To find your chat ID, send a message to your bot and visit `https://api.telegram.org/bot<token>/getUpdates`.
+
 ## Retries and failure handling
 
 Failed alert deliveries are retried up to 3 times with exponential backoff.

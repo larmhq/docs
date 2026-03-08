@@ -1,0 +1,35 @@
+---
+title: "Get monitor uptime"
+authMethod: "bearer"
+api: "GET /api/v1/monitors/{monitor_id}/uptime"
+description: "Returns uptime percentage and status distribution for a monitor"
+---
+
+Requires `monitors:read` permission. Uses the **Stats** rate limit bucket (30 req/min).
+
+<ParamField path="monitor_id" type="string" required>
+  Monitor ID (UUID)
+</ParamField>
+
+<ParamField query="range" type="string" default="24h">
+  Time range. One of: `1h`, `6h`, `24h`, `7d`, `30d`, `90d`.
+</ParamField>
+
+Returns the overall uptime percentage (averaged across probe locations) and a breakdown of check result statuses.
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "uptime_pct": 99.95,
+    "distribution": {
+      "pass": 4312,
+      "fail": 2,
+      "error": 0,
+      "timeout": 1,
+      "total": 4315
+    }
+  }
+}
+```
+</ResponseExample>

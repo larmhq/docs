@@ -1,0 +1,39 @@
+---
+title: "Get certificate info"
+authMethod: "bearer"
+api: "GET /api/v1/monitors/{monitor_id}/cert"
+description: "Returns TLS certificate information for an HTTP monitor"
+---
+
+Requires `monitors:read` permission. Uses the **Stats** rate limit bucket (30 req/min).
+
+<ParamField path="monitor_id" type="string" required>
+  Monitor ID (UUID)
+</ParamField>
+
+Returns certificate details from the most recent check result. Only meaningful for HTTP monitors — returns 404 if the monitor has no TLS data.
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "cert_expiry": "2026-06-01T00:00:00Z",
+    "cert_valid": 1,
+    "cert_issuer": "Let's Encrypt",
+    "cert_subject": "example.com",
+    "days_remaining": 85
+  }
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 404 No certificate data
+{
+  "error": {
+    "type": "not_found",
+    "message": "No certificate data"
+  }
+}
+```
+</ResponseExample>

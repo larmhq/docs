@@ -1,0 +1,51 @@
+---
+title: "Get response times"
+authMethod: "bearer"
+api: "GET /api/v1/monitors/{monitor_id}/response-times"
+description: "Returns p95 response times overall and by probe location"
+---
+
+Requires `monitors:read` permission. Uses the **Stats** rate limit bucket (30 req/min).
+
+<ParamField path="monitor_id" type="string" required>
+  Monitor ID (UUID)
+</ParamField>
+
+<ParamField query="range" type="string" default="24h">
+  Time range. One of: `1h`, `6h`, `24h`, `7d`, `30d`, `90d`.
+</ParamField>
+
+Returns the aggregate p95 response time (averaged across probe locations) and a per-location breakdown sorted by p95 descending.
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "p95": 142.5,
+    "by_location": [
+      {
+        "location": "us-east-1",
+        "p95": 185.2,
+        "checks": 1440
+      },
+      {
+        "location": "eu-central-1",
+        "p95": 99.8,
+        "checks": 1440
+      }
+    ]
+  }
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 200 No data
+{
+  "data": {
+    "p95": null,
+    "by_location": []
+  }
+}
+```
+</ResponseExample>

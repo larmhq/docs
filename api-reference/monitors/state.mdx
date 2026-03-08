@@ -1,0 +1,38 @@
+---
+title: "Get monitor state"
+authMethod: "bearer"
+api: "GET /api/v1/monitors/{monitor_id}/state"
+description: "Returns the current state of a monitor"
+---
+
+Requires `monitors:read` permission. Uses the **Stats** rate limit bucket (30 req/min).
+
+<ParamField path="monitor_id" type="string" required>
+  Monitor ID (UUID)
+</ParamField>
+
+The state reflects the evaluator's current assessment: `pending` (no data yet), `up`, `down`, or `stale` (no recent check results).
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "state": "up",
+    "entered_at": "2025-03-01T12:00:00.000000Z",
+    "previous_state": "down"
+  }
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 200 No state yet
+{
+  "data": {
+    "state": null,
+    "entered_at": null,
+    "previous_state": null
+  }
+}
+```
+</ResponseExample>

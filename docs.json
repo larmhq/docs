@@ -37,7 +37,11 @@
               "api-reference/monitors/get",
               "api-reference/monitors/create",
               "api-reference/monitors/update",
-              "api-reference/monitors/delete"
+              "api-reference/monitors/delete",
+              "api-reference/monitors/state",
+              "api-reference/monitors/uptime",
+              "api-reference/monitors/response-times",
+              "api-reference/monitors/cert"
             ]
           },
           {
