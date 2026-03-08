@@ -1,0 +1,77 @@
+---
+title: "Monitors"
+description: "Monitor types and configuration options"
+---
+
+Larm supports four monitor types. Each type has its own configuration, but they all share common settings for check intervals, timeouts, and incident confirmation.
+
+## Common settings
+
+These settings apply to all monitor types.
+
+| Setting | Default | Description |
+|---|---|---|
+| **Check interval** | 3 min | How often to run the check (minimum 30s) |
+| **Timeout** | 10s | How long to wait for a response (1s–30s) |
+| **Confirm down** | 0 min | Minutes of consecutive failures before marking as down |
+| **Confirm up** | 0 min | Minutes of consecutive successes before marking as recovered |
+
+Confirmation windows help smooth out brief interruptions. Set **Confirm down** to a few minutes if you want to avoid alerts for momentary blips.
+
+## HTTP
+
+Checks a URL and validates the response status code, headers, and body content.
+
+| Field | Description |
+|---|---|
+| **URL** | The URL to check (http or https) |
+| **Method** | HTTP method (GET, POST, HEAD, etc.) |
+| **Expected status codes** | Status codes that count as healthy (e.g. 200, 301) |
+| **Follow redirects** | Whether to follow HTTP redirects |
+| **Headers** | Custom request headers (up to 20, each value up to 8KB) |
+| **Body** | Request body for POST/PUT/PATCH (up to 64KB) |
+| **Expected keywords** | Strings that must appear in the response body |
+| **Unexpected keywords** | Strings that must not appear in the response body |
+
+Larm checks your URL from multiple global locations simultaneously and uses majority voting to confirm the result — a single probe failure won't trigger a false alert.
+
+## TCP
+
+Checks that a host is accepting TCP connections on a given port.
+
+| Field | Description |
+|---|---|
+| **Host** | Hostname or IP address |
+| **Port** | TCP port number |
+
+Use this for databases, mail servers, game servers, or any service that listens on a TCP port.
+
+## DNS
+
+Checks that a DNS record resolves to the expected values.
+
+| Field | Description |
+|---|---|
+| **Host** | The domain to query |
+| **Record type** | DNS record type (A, AAAA, CNAME, MX, TXT, etc.) |
+| **Nameserver** | IP address of the nameserver to query |
+| **Expected records** | Values the DNS response should contain |
+
+Use this to verify DNS propagation, detect hijacking, or monitor record changes.
+
+## Heartbeat
+
+Expects a periodic HTTP ping. If the ping stops arriving, the monitor goes down.
+
+| Field | Description |
+|---|---|
+| **Expected interval** | How often the ping should arrive (30s to 24h) |
+| **Grace period** | Extra time to wait before alerting (0s to 1h) |
+
+When you create a heartbeat monitor, you get a unique token and URL. Ping it from your cron jobs, scheduled tasks, or background workers:
+
+```bash
+curl https://app.larm.dev/api/heartbeat/YOUR_TOKEN
+```
+
+See the [heartbeat API reference](/api-reference/heartbeat) for details.

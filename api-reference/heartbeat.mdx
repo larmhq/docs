@@ -1,0 +1,87 @@
+---
+title: "Heartbeat"
+description: "Monitor cron jobs, scheduled tasks, and background workers"
+api: "GET /api/heartbeat/{token}"
+---
+
+Heartbeat monitors work by expecting a periodic ping. If the ping stops arriving within the configured interval, Larm marks the monitor as down and fires alerts.
+
+## Endpoint
+
+```
+ANY https://app.larm.dev/api/heartbeat/{token}
+```
+
+Accepts any HTTP method (GET, POST, HEAD, etc.). The token is found in your heartbeat monitor's settings in the dashboard.
+
+<Note>
+  No `Authorization` header is needed. The token in the URL is the authentication.
+</Note>
+
+## Responses
+
+<ResponseExample>
+```json 200
+{
+  "status": "ok",
+  "state": "up"
+}
+```
+
+```json 404
+{
+  "error": "not_found"
+}
+```
+
+```json 429
+{
+  "error": "rate_limited"
+}
+```
+</ResponseExample>
+
+| Status | Description |
+|---|---|
+| 200 | Ping received. `state` is one of `pending`, `up`, `down`, or `stale`. |
+| 404 | Token doesn't match any heartbeat monitor. |
+| 429 | Rate limited — maximum 6 pings per minute per token. |
+
+## Examples
+
+### Cron job
+
+Ping after your job completes. If the job fails or hangs, the ping never arrives and Larm alerts you.
+
+```bash
+# Add to the end of your crontab entry
+0 * * * * /usr/local/bin/backup.sh && curl -sf https://app.larm.dev/api/heartbeat/YOUR_TOKEN
+```
+
+### curl
+
+```bash
+curl https://app.larm.dev/api/heartbeat/YOUR_TOKEN
+```
+
+### Python
+
+```python
+import requests
+
+requests.get("https://app.larm.dev/api/heartbeat/YOUR_TOKEN")
+```
+
+### Node.js
+
+```javascript
+fetch("https://app.larm.dev/api/heartbeat/YOUR_TOKEN");
+```
+
+### Ruby
+
+```ruby
+require "net/http"
+
+Net::HTTP.get(URI("https://app.larm.dev/api/heartbeat/YOUR_TOKEN"))
+```

@@ -1,0 +1,54 @@
+---
+title: "Status pages"
+description: "Public status pages for your services"
+---
+
+Status pages let you communicate uptime to your users. Each page shows the current state and 90-day uptime history of the monitors you choose to display.
+
+Pages are rendered as static HTML and hosted on a global CDN — they stay up even if Larm itself has issues.
+
+## Creating a status page
+
+Go to **Status pages** and click **New status page**. Configure the page settings, select which monitors to display, and optionally customize the branding.
+
+Your page is published at `https://<slug>.status.larm.dev`.
+
+## Page settings
+
+| Field | Description |
+|---|---|
+| **Name** | Display name of the status page |
+| **Slug** | URL identifier (e.g. `my-service` becomes `my-service.status.larm.dev`). Lowercase, hyphens allowed, 3–63 characters. |
+| **Description** | Optional brief description shown on the page (up to 1000 characters) |
+| **Theme** | System (follows visitor's preference), Light, or Dark |
+| **Primary color** | Brand color in hex format (e.g. `#4F46E5`) |
+| **Logo** | Custom logo image (PNG, JPG, or SVG, up to 1 MB) |
+| **Enabled** | Whether the page is publicly visible |
+
+## Monitor components
+
+Select which monitors to display on the page. Each component has:
+
+| Field | Description |
+|---|---|
+| **Display name** | The name shown on the status page (can differ from the monitor's name) |
+| **Position** | Display order (0 = first) |
+
+## Custom domains
+
+<Note>
+  Custom domains are available on paid plans.
+</Note>
+
+You can serve your status page from your own domain (e.g. `status.example.com`). Apex domains are not supported — use a subdomain.
+
+To set up a custom domain:
+
+1. Enter your domain in the status page settings
+2. Add a CNAME record pointing your domain to `<slug>.status.larm.dev`
+3. If you're using Cloudflare, also add a TXT record: `_larm-verify.<your-domain>` with value `larm-verify=<token>` (shown in the dashboard)
+4. Click **Verify** — Larm checks DNS and provisions SSL automatically
+
+## Email subscribers
+
+Visitors can subscribe to your status page by email. When a monitor on the page changes state, subscribers are notified automatically.

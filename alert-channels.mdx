@@ -1,0 +1,103 @@
+---
+title: "Alert channels"
+description: "Alert channel types and configuration"
+---
+
+Alert channels define where Larm sends notifications when a monitor goes down or recovers. Each monitor can be linked to one or more channels.
+
+Larm sends alerts for these events:
+
+- **Monitor down** — a monitor has been confirmed down
+- **Monitor recovered** — a monitor is back up
+- **Certificate expiring** — an SSL certificate is nearing expiry
+- **Test** — a manual test alert sent from the dashboard
+
+## Slack
+
+Posts a formatted message to a Slack channel via an incoming webhook.
+
+| Field | Description |
+|---|---|
+| **Webhook URL** | Slack incoming webhook URL (starts with `https://hooks.slack.com/services/`) |
+
+## Discord
+
+Posts an embed message to a Discord channel via webhook.
+
+| Field | Description |
+|---|---|
+| **Webhook URL** | Discord webhook URL (matches `https://discord.com/api/webhooks/{id}/{token}`) |
+
+## Email
+
+Sends an HTML email to one or more recipients.
+
+| Field | Description |
+|---|---|
+| **Recipients** | List of email addresses |
+
+## Webhook
+
+POSTs a JSON payload to any HTTPS URL. Use this to integrate with services Larm doesn't have a native adapter for.
+
+| Field | Required | Description |
+|---|---|---|
+| **URL** | Yes | HTTPS endpoint to receive the payload |
+| **Signing secret** | No | Used to generate an HMAC-SHA256 signature in the `x-larm-signature-256` header |
+| **Headers** | No | Custom HTTP headers to include with the request |
+| **Payload template** | No | Custom JSON template with variable interpolation |
+
+## PagerDuty
+
+Triggers and resolves incidents via the PagerDuty Events API v2.
+
+| Field | Description |
+|---|---|
+| **Integration key** | 32-character PagerDuty Events API v2 integration key |
+
+When a monitor goes down, Larm triggers a PagerDuty incident. When it recovers, Larm automatically resolves the incident using a stable dedup key.
+
+## Microsoft Teams
+
+Posts an Adaptive Card message to a Teams channel. Supports both legacy Office 365 Connector and Power Automate Workflow webhooks.
+
+| Field | Description |
+|---|---|
+| **Webhook URL** | Teams incoming webhook URL |
+
+## Grafana IRM
+
+Creates and resolves alerts in Grafana OnCall via the Formatted Webhook integration.
+
+| Field | Description |
+|---|---|
+| **Integration URL** | Grafana OnCall Formatted Webhook integration URL |
+
+When a monitor goes down, Larm creates an alert in Grafana OnCall. When it recovers, the alert is automatically resolved using a stable dedup key.
+
+## incident.io
+
+Creates and resolves alerts via incident.io's HTTP Alert Source API.
+
+| Field | Description |
+|---|---|
+| **Alert source URL** | incident.io alert source URL (starts with `https://api.incident.io/`) |
+| **API token** | incident.io API token for authentication |
+
+When a monitor goes down, Larm fires an alert in incident.io. When it recovers, the alert is automatically resolved using a stable dedup key.
+
+## Mattermost
+
+Posts a formatted message to a Mattermost channel via an incoming webhook.
+
+| Field | Required | Description |
+|---|---|---|
+| **Webhook URL** | Yes | Mattermost incoming webhook URL |
+| **Channel** | No | Override the webhook's default channel |
+| **Username** | No | Override the webhook's default bot username |
+
+## Retries and failure handling
+
+Failed alert deliveries are retried up to 3 times with exponential backoff.
+
+If a channel returns a permanent error (401, 403, or 404), Larm disables the channel automatically and notifies the organization owner by email. You can re-enable it from the dashboard after fixing the configuration.

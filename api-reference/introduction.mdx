@@ -1,33 +1,88 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Authenticate and interact with the Larm API"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://app.larm.dev/api/v1
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API requests require a Bearer token in the `Authorization` header:
+
+```bash
+curl https://app.larm.dev/api/v1/monitors \
+  -H "Authorization: Bearer larm_api_..."
+```
+
+### Creating an API key
+
+1. Go to **Dashboard > Settings > API Keys**
+2. Click **Create API key**
+3. Choose permissions for each resource (monitors, status pages, alert channels)
+4. Copy the key — it's only shown once
+
+API keys use the format `larm_api_<base64-payload><crc32>`.
+
+### Permissions
+
+Each API key has a permission level per resource:
+
+| Resource | Levels |
+|---|---|
+| Monitors | `none`, `read`, `read_write` |
+| Status pages | `none`, `read`, `read_write` |
+| Alert channels | `none`, `read`, `read_write` |
+
+<Note>
+  **Free plan** API keys are read-only. **Pro plan** keys support both read and write access.
+</Note>
+
+## Rate limits
+
+| Operation | Limit |
+|---|---|
+| Read | 120 requests/min |
+| Write | 30 requests/min |
+| Stats | 30 requests/min |
+
+Limits are per API key. Rate limit headers are included on every response:
+
+| Header | Description |
+|---|---|
+| `x-ratelimit-limit` | Maximum requests allowed in the window |
+| `x-ratelimit-remaining` | Requests remaining in the current window |
+| `x-ratelimit-reset` | Unix timestamp when the window resets |
+| `retry-after` | Seconds until you can retry (only on 429) |
+
+## Error format
+
+All errors return a consistent JSON structure:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "error": {
+    "type": "invalid_api_key",
+    "message": "The provided API key is invalid or has been revoked."
   }
-]
+}
 ```
+
+### Standard error codes
+
+| Status | Type | Description |
+|---|---|---|
+| 401 | `invalid_api_key` | Missing, invalid, or revoked API key |
+| 403 | `insufficient_permissions` | API key lacks the required permission |
+| 429 | `rate_limited` | Too many requests — check `retry-after` header |
+
+## REST endpoints
+
+<Note>
+  REST endpoints for managing monitors, alert channels, and status pages are coming soon. The API key infrastructure is ready — endpoints will be added in a future release.
+</Note>
+
+The [heartbeat endpoint](/api-reference/heartbeat) is available now and uses token-based authentication (no API key needed).
