@@ -39,6 +39,10 @@ Requires `monitors:read_write` permission. Only include the fields you want to c
   Whether the monitor is active
 </ParamField>
 
+<ParamField body="alert_channel_ids" type="string[]">
+  Replace the linked alert channels. Pass all channel IDs you want linked — this is a full replacement, not an append.
+</ParamField>
+
 <ResponseExample>
 ```json 200
 {
@@ -57,7 +61,9 @@ Requires `monitors:read_write` permission. Only include the fields you want to c
       "expected_status_codes": [200],
       "follow_redirects": true
     },
-    "created_at": "2025-03-01T12:00:00Z",
+    "current_state": "up",
+    "alert_channel_ids": ["660e8400-e29b-41d4-a716-446655440000"],
+    "inserted_at": "2025-03-01T12:00:00Z",
     "updated_at": "2025-03-01T14:30:00Z"
   }
 }

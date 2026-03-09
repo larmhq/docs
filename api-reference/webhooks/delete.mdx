@@ -1,0 +1,17 @@
+---
+title: "Delete webhook subscription"
+authMethod: "bearer"
+api: "DELETE /api/v1/webhooks/{id}"
+description: "Deletes a webhook subscription"
+---
+
+Requires `monitors:read_write` permission.
+
+<ParamField path="id" type="string" required>
+  Webhook subscription ID (UUID)
+</ParamField>
+
+<ResponseExample>
+```json 204
+```
+</ResponseExample>

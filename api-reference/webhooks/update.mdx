@@ -1,0 +1,39 @@
+---
+title: "Update webhook subscription"
+authMethod: "bearer"
+api: "PATCH /api/v1/webhooks/{id}"
+description: "Updates an existing webhook subscription"
+---
+
+Requires `monitors:read_write` permission. Only include the fields you want to change.
+
+<ParamField path="id" type="string" required>
+  Webhook subscription ID (UUID)
+</ParamField>
+
+<ParamField body="url" type="string">
+  HTTPS endpoint URL to receive webhook events
+</ParamField>
+
+<ParamField body="events" type="string[]">
+  Events to subscribe to. Valid values: `monitor.state_changed`, `monitor.created`, `monitor.updated`, `monitor.deleted`.
+</ParamField>
+
+<ParamField body="enabled" type="boolean">
+  Whether the subscription is active
+</ParamField>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "url": "https://example.com/webhooks/larm",
+    "events": ["monitor.state_changed"],
+    "enabled": false,
+    "inserted_at": "2025-03-01T12:00:00Z",
+    "updated_at": "2025-03-01T14:30:00Z"
+  }
+}
+```
+</ResponseExample>

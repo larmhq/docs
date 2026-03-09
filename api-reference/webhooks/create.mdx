@@ -1,0 +1,38 @@
+---
+title: "Create webhook subscription"
+authMethod: "bearer"
+api: "POST /api/v1/webhooks"
+description: "Creates a new webhook subscription"
+---
+
+Requires `monitors:read_write` permission.
+
+<ParamField body="url" type="string" required>
+  HTTPS endpoint URL to receive webhook events
+</ParamField>
+
+<ParamField body="events" type="string[]" required>
+  Events to subscribe to. At least one required. Valid values: `monitor.state_changed`, `monitor.created`, `monitor.updated`, `monitor.deleted`.
+</ParamField>
+
+<ParamField body="enabled" type="boolean" default={true}>
+  Whether the subscription is active
+</ParamField>
+
+The response includes the signing `secret` — **this is only shown once**. Use it to verify webhook payloads via the `X-Larm-Signature` header.
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "url": "https://example.com/webhooks/larm",
+    "events": ["monitor.state_changed", "monitor.created"],
+    "enabled": true,
+    "secret": "a1b2c3d4e5f6...",
+    "inserted_at": "2025-03-01T12:00:00Z",
+    "updated_at": "2025-03-01T12:00:00Z"
+  }
+}
+```
+</ResponseExample>

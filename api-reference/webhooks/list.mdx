@@ -1,0 +1,25 @@
+---
+title: "List webhook subscriptions"
+authMethod: "bearer"
+api: "GET /api/v1/webhooks"
+description: "Returns all webhook subscriptions in the organization"
+---
+
+Requires `monitors:read` permission.
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "url": "https://example.com/webhooks/larm",
+      "events": ["monitor.state_changed", "monitor.created"],
+      "enabled": true,
+      "inserted_at": "2025-03-01T12:00:00Z",
+      "updated_at": "2025-03-01T12:00:00Z"
+    }
+  ]
+}
+```
+</ResponseExample>

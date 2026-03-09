@@ -39,6 +39,10 @@ Requires `monitors:read_write` permission.
   Whether the monitor is active
 </ParamField>
 
+<ParamField body="alert_channel_ids" type="string[]">
+  List of alert channel IDs to attach. If omitted, channels with `default_for_new_monitors` are linked automatically.
+</ParamField>
+
 <ResponseExample>
 ```json 201
 {
@@ -57,7 +61,9 @@ Requires `monitors:read_write` permission.
       "expected_status_codes": [200],
       "follow_redirects": true
     },
-    "created_at": "2025-03-01T12:00:00Z",
+    "current_state": "pending",
+    "alert_channel_ids": ["660e8400-e29b-41d4-a716-446655440000"],
+    "inserted_at": "2025-03-01T12:00:00Z",
     "updated_at": "2025-03-01T12:00:00Z"
   }
 }
