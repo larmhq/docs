@@ -7,6 +7,10 @@ The webhook alert channel POSTs a JSON payload to any HTTPS URL when a monitor c
 
 For setup instructions, see [Alert channels — Webhook](/alert-channels#webhook).
 
+<Note>
+  This page documents the **webhook alert channel** — an alerting integration that sends notifications when monitors go down or recover. Larm also has **webhook subscriptions**, a separate API feature that delivers events (monitor created, updated, deleted, state changed) to your endpoints with HMAC signing. See the [webhook subscriptions API reference](/api-reference/webhooks/list) for details.
+</Note>
+
 ## Events
 
 | Event | Description |
@@ -144,6 +148,6 @@ Custom headers set in the alert channel config are included as-is.
 
 ## Retries
 
-Failed deliveries are retried up to 3 times with exponential backoff.
+Delivery is attempted up to 3 times with exponential backoff.
 
 A `401` or `403` response is treated as a permanent failure — the delivery is not retried and the alert channel is automatically disabled. You'll receive an email notification and can re-enable the channel from the dashboard after fixing the issue.

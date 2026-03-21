@@ -3,7 +3,7 @@ title: "Monitors"
 description: "Monitor types and configuration options"
 ---
 
-Larm supports four monitor types. Each type has its own configuration, but they all share common settings for check intervals, timeouts, and incident confirmation.
+Larm supports five monitor types. Each type has its own configuration, but they all share common settings for check intervals, timeouts, and incident confirmation.
 
 ## Common settings
 
@@ -13,8 +13,8 @@ These settings apply to all monitor types.
 |---|---|---|
 | **Check interval** | 3 min | How often to run the check (minimum 30s) |
 | **Timeout** | 10s | How long to wait for a response (1s–30s) |
-| **Confirm down** | 0 min | Minutes of consecutive failures before marking as down |
-| **Confirm up** | 0 min | Minutes of consecutive successes before marking as recovered |
+| **Confirm down** | 1 min | Minutes of consecutive failures before marking as down |
+| **Confirm up** | 3 min | Minutes of consecutive successes before marking as recovered |
 
 Confirmation windows help smooth out brief interruptions. Set **Confirm down** to a few minutes if you want to avoid alerts for momentary blips.
 
@@ -30,8 +30,8 @@ Checks a URL and validates the response status code, headers, and body content.
 | **Follow redirects** | Whether to follow HTTP redirects |
 | **Headers** | Custom request headers (up to 20, each value up to 8KB) |
 | **Body** | Request body for POST/PUT/PATCH (up to 64KB) |
-| **Expected keywords** | Strings that must appear in the response body |
-| **Unexpected keywords** | Strings that must not appear in the response body |
+| **Expected keyword** | A string that must appear in the response body (up to 1000 bytes) |
+| **Unexpected keyword** | A string that must not appear in the response body (up to 1000 bytes) |
 
 Larm checks your URL from multiple global locations simultaneously and uses majority voting to confirm the result — a single probe failure won't trigger a false alert.
 
@@ -65,8 +65,8 @@ Expects a periodic HTTP ping. If the ping stops arriving, the monitor goes down.
 
 | Field | Description |
 |---|---|
-| **Expected interval** | How often the ping should arrive (30s to 24h) |
-| **Grace period** | Extra time to wait before alerting (0s to 1h) |
+| **Expected interval** | How often the ping should arrive (10s to 24h, plan-dependent) |
+| **Consecutive misses** | Number of missed intervals before alerting (default 2) |
 
 When you create a heartbeat monitor, you get a unique token and URL. Ping it from your cron jobs, scheduled tasks, or background workers:
 
@@ -75,3 +75,18 @@ curl https://app.larm.dev/api/heartbeat/YOUR_TOKEN
 ```
 
 See the [heartbeat API reference](/api-reference/heartbeat) for details.
+
+## Synthetic
+
+<Note>Synthetic monitoring is available on Pro and Business plans.</Note>
+
+Runs a Playwright browser script against your application. Use this for testing login flows, checkout processes, or any user journey that can't be verified with a simple HTTP request.
+
+| Field | Description |
+|---|---|
+| **Script** | Playwright script to execute (up to 64KB) |
+| **Interval** | How often to run the check (minimum 5 min on Pro, 3 min on Business) |
+| **Confirm down after** | Consecutive failures before marking as down (default 3) |
+| **Confirm up after** | Consecutive passes before marking as recovered (default 1) |
+
+Synthetic monitors use count-based confirmation instead of time-based. A `confirm_down_after` of 3 means three consecutive failing checks before we alert you. This prevents flaky scripts or transient runner issues from triggering false alerts.

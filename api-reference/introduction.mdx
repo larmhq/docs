@@ -76,7 +76,7 @@ All errors return a consistent JSON structure:
 | Status | Type | Description |
 |---|---|---|
 | 401 | `invalid_api_key` | Missing, invalid, or revoked API key |
-| 403 | `insufficient_permissions` | API key lacks the required permission |
+| 403 | `forbidden` | API key lacks the required permission |
 | 429 | `rate_limited` | Too many requests — check `retry-after` header |
 
 The [heartbeat endpoint](/api-reference/heartbeat) uses token-based authentication (no API key needed). All other endpoints require an API key.

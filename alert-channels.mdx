@@ -138,8 +138,20 @@ Sends messages to a Telegram chat via the Bot API. You provide your own bot (cre
 
 To find your chat ID, send a message to your bot and visit `https://api.telegram.org/bot<token>/getUpdates`.
 
+## SMS
+
+<Note>SMS alerts are available on Pro and Business plans.</Note>
+
+Sends a text message to a verified phone number.
+
+| Field | Description |
+|---|---|
+| **Phone number** | Phone number in E.164 format (e.g. `+447700900000`) |
+
+When you add an SMS channel, the phone number must be verified via a confirmation code. SMS alerts are metered: Pro plans include 125 messages per month, Business includes 500 per month. Additional hourly and daily rate limits apply to prevent burst costs from flapping monitors.
+
 ## Retries and failure handling
 
-Failed alert deliveries are retried up to 3 times with exponential backoff.
+Alert delivery is attempted up to 3 times with exponential backoff.
 
 If a channel returns a permanent error (401, 403, or 404), Larm disables the channel automatically and notifies the organization owner by email. You can re-enable it from the dashboard after fixing the configuration.

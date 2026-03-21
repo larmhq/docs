@@ -12,7 +12,7 @@ Requires `monitors:read_write` permission.
 </ParamField>
 
 <ParamField body="check_type" type="string" required>
-  `http`, `tcp`, `dns`, or `heartbeat`
+  `http`, `tcp`, `dns`, `heartbeat`, or `synthetic`
 </ParamField>
 
 <ParamField body="config" type="object" required>
@@ -27,12 +27,20 @@ Requires `monitors:read_write` permission.
   Timeout in milliseconds (range: 1000–30000)
 </ParamField>
 
-<ParamField body="confirm_down_minutes" type="integer" default={0}>
-  Minutes of consecutive failures before marking down
+<ParamField body="confirm_down_minutes" type="integer" default={1}>
+  Minutes of consecutive failures before marking down (HTTP, TCP, DNS, heartbeat)
 </ParamField>
 
-<ParamField body="confirm_up_minutes" type="integer" default={0}>
-  Minutes of consecutive successes before marking recovered
+<ParamField body="confirm_up_minutes" type="integer" default={3}>
+  Minutes of consecutive successes before marking recovered (HTTP, TCP, DNS, heartbeat)
+</ParamField>
+
+<ParamField body="confirm_down_after" type="integer" default={3}>
+  Consecutive failures before marking down (synthetic monitors only, range: 1–10)
+</ParamField>
+
+<ParamField body="confirm_up_after" type="integer" default={1}>
+  Consecutive passes before marking recovered (synthetic monitors only, range: 1–10)
 </ParamField>
 
 <ParamField body="enabled" type="boolean" default={true}>
@@ -53,8 +61,8 @@ Requires `monitors:read_write` permission.
     "enabled": true,
     "interval_seconds": 180,
     "timeout_ms": 10000,
-    "confirm_down_minutes": 0,
-    "confirm_up_minutes": 0,
+    "confirm_down_minutes": 1,
+    "confirm_up_minutes": 3,
     "config": {
       "url": "https://example.com",
       "method": "GET",
