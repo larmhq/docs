@@ -3,13 +3,23 @@ title: "Status pages"
 description: "Public status pages for your services"
 ---
 
-Status pages let you communicate uptime to your users. Each page shows the current state and 90-day uptime history of the monitors you choose to display.
+Status pages let your users see what's going on. Each page shows the current state of your components, active incidents with their update timeline, and 90 days of uptime history.
 
-Pages are rendered as static HTML and hosted on a global CDN — they stay up even if Larm itself has issues.
+Pages are static HTML hosted on a global CDN. Every time an incident is updated or a component changes state, the page is regenerated and pushed to edge nodes worldwide. It stays up even if Larm itself has issues.
+
+## How status pages work
+
+Your status page is a view of your incidents. When you create an incident and post an update that affects a status page component, the page re-renders with the new state. When you resolve the incident, the component goes back to operational and the incident moves to the history section.
+
+**With monitors:** Monitors create incidents automatically. If a status page component is linked to a monitor, the whole flow is hands-free — outage detected, incident created, status page updated, subscribers notified, and resolved when the monitor recovers.
+
+**Without monitors:** Create incidents yourself, post updates, choose which components are affected. You're in control of the timing and the messaging.
+
+You can also hit the **Post update** button directly on a status page to create an incident in one step — it's a shortcut into the same incident workflow.
 
 ## Creating a status page
 
-Go to **Status pages** and click **New status page**. Configure the page settings, select which monitors to display, and optionally customize the branding.
+Go to **Status pages** and click **New status page**. Configure the settings, add components, and optionally customize the branding.
 
 Your page is published at `https://<slug>.status.larm.dev`.
 
@@ -26,14 +36,23 @@ Your page is published at `https://<slug>.status.larm.dev`.
 | **Logo (dark)** | Logo shown in dark mode (PNG, JPG, or SVG, up to 1 MB) |
 | **Enabled** | Whether the page is publicly visible (defaults to disabled) |
 
-## Monitor components
+## Components
 
-Select which monitors to display on the page. Each component has:
+Components are the services or systems shown on your status page — "API", "Dashboard", "Payment processing", whatever makes sense for your users. Each component has a name, optional description, and a display position.
 
-| Field | Description |
+A component can be linked to monitors for automatic updates, or left standalone.
+
+### Component states
+
+| State | Meaning |
 |---|---|
-| **Display name** | The name shown on the status page (can differ from the monitor's name) |
-| **Position** | Display order (0 = first) |
+| **Operational** | Everything is working normally |
+| **Degraded performance** | Slower than expected but still functional |
+| **Partial outage** | Some functionality is unavailable |
+| **Major outage** | Service is down |
+| **Under maintenance** | Planned maintenance in progress |
+
+Component state is set by incidents. When an incident update marks a component as "major outage", that's what your users see on the status page until the incident is resolved or a newer update changes it.
 
 ## Custom domains
 
@@ -41,9 +60,7 @@ Select which monitors to display on the page. Each component has:
   Custom domains are available on paid plans.
 </Note>
 
-You can serve your status page from your own domain (e.g. `status.example.com`). Apex domains are not supported — use a subdomain.
-
-To set up a custom domain:
+Serve your status page from your own domain (e.g. `status.example.com`). Apex domains are not supported — use a subdomain.
 
 1. Enter your domain in the status page settings
 2. Add a CNAME record pointing your domain to `<slug>.status.larm.dev`
@@ -52,4 +69,10 @@ To set up a custom domain:
 
 ## Email subscribers
 
-Visitors can subscribe to your status page by email. When a monitor on the page changes state, subscribers are notified automatically.
+Visitors can subscribe to your status page by email. When an incident is updated, subscribers are notified automatically.
+
+| Plan | Subscriber limit |
+|---|---|
+| Free | 100 |
+| Pro | 1,000 |
+| Business | 10,000 |

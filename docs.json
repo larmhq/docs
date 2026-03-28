@@ -19,7 +19,7 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["index", "quickstart", "monitors", "alert-channels", "webhooks", "status-pages", "plan-limits"]
+            "pages": ["index", "quickstart", "monitors", "alert-channels", "status-pages", "webhooks", "plan-limits"]
           },
           {
             "group": "Guides",
