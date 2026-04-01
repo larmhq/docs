@@ -1,0 +1,18 @@
+---
+title: "Delete component"
+authMethod: "bearer"
+api: "DELETE /api/v1/status-pages/{status_page_id}/components/{id}"
+description: "Removes a component from a status page"
+---
+
+Requires `status_pages:read_write` permission.
+
+<ParamField path="status_page_id" type="string" required>
+  Status page UUID
+</ParamField>
+
+<ParamField path="id" type="string" required>
+  Component UUID
+</ParamField>
+
+Returns `204 No Content` on success.

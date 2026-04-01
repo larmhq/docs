@@ -1,0 +1,54 @@
+---
+title: "Create component"
+authMethod: "bearer"
+api: "POST /api/v1/status-pages/{status_page_id}/components"
+description: "Adds a component to a status page"
+---
+
+Requires `status_pages:read_write` permission.
+
+<ParamField path="status_page_id" type="string" required>
+  Status page UUID
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Component name (1–255 characters)
+</ParamField>
+
+<ParamField body="position" type="integer" required>
+  Display position (0-indexed)
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional description
+</ParamField>
+
+<ParamField body="component_group_id" type="string">
+  Optional group UUID to organize components under a heading
+</ParamField>
+
+<ParamField body="monitors" type="object[]">
+  Monitors to link. Each object has `id` (monitor UUID) and `down_status` (`major_outage`, `partial_outage`, or `degraded_performance`). Linked monitors trigger auto-incidents when they detect failures.
+</ParamField>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "API",
+    "description": "REST API endpoints",
+    "position": 0,
+    "component_group_id": null,
+    "monitors": [
+      {
+        "monitor_id": "660e8400-e29b-41d4-a716-446655440000",
+        "down_status": "major_outage"
+      }
+    ],
+    "inserted_at": "2026-03-28T12:00:00Z",
+    "updated_at": "2026-03-28T12:00:00Z"
+  }
+}
+```
+</ResponseExample>

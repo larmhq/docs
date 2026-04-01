@@ -1,0 +1,133 @@
+---
+title: "Connect via MCP"
+description: "Use Larm from Claude Code, Cursor, or any MCP-compatible AI tool"
+---
+
+Larm has a built-in [MCP](https://modelcontextprotocol.io) server that lets AI tools manage your monitors, check uptime, create incidents, and set up alerts — all through natural language.
+
+Available on all plans, including Free.
+
+## Claude Code
+
+Run this command in your terminal:
+
+```bash
+claude mcp add larm --transport http https://app.larm.dev/mcp
+```
+
+Or add it to your project's `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "larm": {
+      "type": "http",
+      "url": "https://app.larm.dev/mcp"
+    }
+  }
+}
+```
+
+## Claude Desktop
+
+Open **Settings > Developer > Edit Config** and add:
+
+```json
+{
+  "mcpServers": {
+    "larm": {
+      "type": "http",
+      "url": "https://app.larm.dev/mcp"
+    }
+  }
+}
+```
+
+## Cursor
+
+Open **Settings > MCP Servers** and add a new server:
+
+- **Name:** `larm`
+- **Type:** `http`
+- **URL:** `https://app.larm.dev/mcp`
+
+Or add to your project's `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "larm": {
+      "type": "http",
+      "url": "https://app.larm.dev/mcp"
+    }
+  }
+}
+```
+
+## VS Code
+
+Add to your project's `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "larm": {
+      "type": "http",
+      "url": "https://app.larm.dev/mcp"
+    }
+  }
+}
+```
+
+<Note>
+  VS Code uses `servers` as the root key, not `mcpServers`. MCP tools work in Copilot's Agent mode.
+</Note>
+
+## Authentication
+
+The first time you use a Larm tool, your MCP client will open a browser window:
+
+1. Log in with your Larm account (email, GitHub, or Google)
+2. Approve the authorization request — "Full access to your Larm account"
+3. Return to your editor — the connection is ready
+
+Tokens refresh automatically. You won't need to authorize again unless you revoke access.
+
+## Available tools
+
+### Read
+
+| Tool | Description |
+|---|---|
+| `list_monitors` | List all monitors with their current state |
+| `get_monitor` | Full details: config, state, uptime %, p95, error rate |
+| `get_uptime_summary` | Fleet-wide uptime, incident count, and MTTR |
+| `list_alert_channels` | All configured alert channels |
+| `list_state_transitions` | Monitor state changes in the last 24 hours |
+
+### Write
+
+| Tool | Description |
+|---|---|
+| `create_monitor` | Create a new HTTP monitor |
+| `update_monitor` | Change URL, interval, timeout, or enable/disable |
+| `create_alert_channel` | Create a webhook, email, Discord, or other channel |
+| `test_alert_channel` | Send a test notification |
+| `list_incidents` | List status page incidents |
+| `create_incident` | Create an incident, optionally publish to a status page |
+| `update_incident` | Post updates, advance status, or resolve |
+
+## Examples
+
+Ask your AI tool:
+
+- "What's the uptime of my monitors this week?"
+- "Create a monitor for https://api.example.com/health"
+- "Set up a Discord webhook for alerts"
+- "Create an incident — the database is down — and publish it to the production status page"
+- "Resolve the database incident"
+- "Pause the staging monitor"
+
+## Rate limits
+
+60 requests per minute per token. If you hit the limit, wait 60 seconds.

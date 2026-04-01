@@ -1,0 +1,37 @@
+---
+title: "List incidents"
+authMethod: "bearer"
+api: "GET /api/v1/incidents"
+description: "Lists incidents for your organization"
+---
+
+Requires `incidents:read` permission.
+
+<ParamField query="status" type="string">
+  Filter by status: `investigating`, `identified`, `monitoring`, `resolved`, `scheduled`, `in_progress`, `completed`
+</ParamField>
+
+<ParamField query="type" type="string">
+  Filter by type: `incident` or `maintenance`
+</ParamField>
+
+<ResponseExample>
+```json 200
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "title": "API outage",
+      "type": "incident",
+      "status": "investigating",
+      "impact": "major",
+      "auto_created": false,
+      "started_at": "2026-03-28T12:00:00Z",
+      "resolved_at": null,
+      "inserted_at": "2026-03-28T12:00:00Z",
+      "updated_at": "2026-03-28T12:00:00Z"
+    }
+  ]
+}
+```
+</ResponseExample>

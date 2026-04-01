@@ -1,0 +1,69 @@
+---
+title: "Create incident"
+authMethod: "bearer"
+api: "POST /api/v1/incidents"
+description: "Creates a new incident, optionally publishing to a status page"
+---
+
+Requires `incidents:read_write` permission.
+
+Create an incident to communicate a service disruption. Optionally publish to a status page with affected components in the same call.
+
+<ParamField body="title" type="string" required>
+  Incident title (1–255 characters)
+</ParamField>
+
+<ParamField body="type" type="string" default="incident">
+  `incident` or `maintenance`
+</ParamField>
+
+<ParamField body="impact" type="string" default="major">
+  `minor`, `major`, or `critical`
+</ParamField>
+
+<ParamField body="message" type="string">
+  Initial timeline message. If omitted, the incident is created with a default message.
+</ParamField>
+
+<ParamField body="status_page_id" type="string">
+  UUID of the status page to publish to. Must be used together with `components`.
+</ParamField>
+
+<ParamField body="components" type="object[]">
+  Components to mark as affected. Each object has `id` (component UUID) and `status` (`major_outage`, `partial_outage`, `degraded_performance`, `under_maintenance`, or `operational`).
+</ParamField>
+
+<ResponseExample>
+```json 201
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "title": "API outage",
+    "type": "incident",
+    "status": "investigating",
+    "impact": "major",
+    "auto_created": false,
+    "started_at": "2026-03-28T12:00:00Z",
+    "resolved_at": null,
+    "updates": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440000",
+        "status": "investigating",
+        "body": "Investigating API errors.",
+        "posted_at": "2026-03-28T12:00:00Z",
+        "posted_by": "user@example.com"
+      }
+    ],
+    "affected_components": [
+      {
+        "id": "770e8400-e29b-41d4-a716-446655440000",
+        "name": "API",
+        "status": "major_outage"
+      }
+    ],
+    "inserted_at": "2026-03-28T12:00:00Z",
+    "updated_at": "2026-03-28T12:00:00Z"
+  }
+}
+```
+</ResponseExample>

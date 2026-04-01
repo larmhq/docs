@@ -23,7 +23,7 @@
           },
           {
             "group": "Guides",
-            "pages": ["guides/connect-to-zapier", "guides/connect-to-n8n", "guides/connect-to-make"]
+            "pages": ["guides/mcp", "guides/connect-to-zapier", "guides/connect-to-n8n", "guides/connect-to-make"]
           }
         ]
       },
@@ -59,6 +59,15 @@
             ]
           },
           {
+            "group": "Incidents",
+            "pages": [
+              "api-reference/incidents/list",
+              "api-reference/incidents/get",
+              "api-reference/incidents/create",
+              "api-reference/incidents/update"
+            ]
+          },
+          {
             "group": "Status pages",
             "pages": [
               "api-reference/status-pages/list",
@@ -66,6 +75,16 @@
               "api-reference/status-pages/create",
               "api-reference/status-pages/update",
               "api-reference/status-pages/delete"
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "api-reference/components/list",
+              "api-reference/components/get",
+              "api-reference/components/create",
+              "api-reference/components/update",
+              "api-reference/components/delete"
             ]
           },
           {
