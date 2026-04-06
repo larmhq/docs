@@ -23,7 +23,7 @@
           },
           {
             "group": "Guides",
-            "pages": ["guides/mcp", "guides/connect-to-zapier", "guides/connect-to-n8n", "guides/connect-to-make"]
+            "pages": ["guides/cli", "guides/mcp", "guides/connect-to-zapier", "guides/connect-to-n8n", "guides/connect-to-make"]
           }
         ]
       },

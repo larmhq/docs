@@ -1,0 +1,141 @@
+---
+title: "CLI"
+description: "Manage Larm from your terminal with the official CLI"
+---
+
+The Larm CLI lets you manage monitors, alerts, status pages, incidents, and webhooks from your terminal. Open source at [github.com/larmhq/larm-cli](https://github.com/larmhq/larm-cli).
+
+## Install
+
+<Tabs>
+  <Tab title="Homebrew">
+    ```bash
+    brew install larmhq/tap/larm
+    ```
+  </Tab>
+  <Tab title="Binary">
+    Download from [GitHub Releases](https://github.com/larmhq/larm-cli/releases).
+  </Tab>
+  <Tab title="Go">
+    ```bash
+    go install github.com/larmhq/larm-cli@latest
+    ```
+  </Tab>
+</Tabs>
+
+## Authenticate
+
+### Browser login (recommended)
+
+```bash
+larm auth login
+```
+
+Opens your browser for OAuth. Enter the code shown in your terminal, pick your organization, and approve.
+
+### API key
+
+```bash
+larm auth login --with-token
+```
+
+Paste an API key from [Settings > API Keys](https://app.larm.dev/settings/api-keys). Or set the `LARM_API_KEY` environment variable.
+
+## Usage
+
+### Monitors
+
+```bash
+larm monitors list
+larm monitors show <id>
+larm monitors create --name "API" --url https://example.com
+larm monitors update <id> --name "New Name"
+larm monitors delete <id>
+```
+
+### Monitor stats
+
+```bash
+larm monitors state <id>
+larm monitors uptime <id> --range 7d
+larm monitors response-times <id>
+larm monitors cert <id>
+```
+
+### Alert channels
+
+```bash
+larm alerts list
+larm alerts show <id>
+larm alerts create --name "Slack" --type slack --config '{"webhook_url":"..."}'
+```
+
+### Status pages
+
+```bash
+larm status-pages list
+larm status-pages show <id>
+larm status-pages create --name "Acme Status" --slug acme-status
+larm components list --status-page-id <id>
+```
+
+### Incidents
+
+```bash
+larm incidents list
+larm incidents show <id>
+larm incidents create --title "API outage" --impact critical --message "Investigating"
+larm incidents update <id> --status resolved
+```
+
+### Webhooks
+
+```bash
+larm webhooks list
+larm webhooks create --url https://example.com/hook --events monitor.state_changed
+```
+
+### Raw API access
+
+```bash
+larm api GET /monitors
+larm api GET /monitors --field check_type=http
+larm api POST /monitors --field name=Test --field check_type=http
+```
+
+## Output formats
+
+Table output in a terminal, JSON when piped.
+
+```bash
+larm monitors list                              # table
+larm monitors list --output json                # JSON
+larm monitors list --output json --jq '.[].name'  # JQ filter
+larm monitors list --fields name,check_type     # select columns
+```
+
+## Other flags
+
+| Flag | Description |
+|------|-------------|
+| `--quiet` | Suppress output on success |
+| `--dry-run` | Print request without sending |
+| `--yes` | Skip delete confirmation prompts |
+| `--output json` | Force JSON output |
+| `--fields` | Select columns for table output |
+| `--jq` | Filter JSON output with JQ expressions |
+
+## For LLM agents
+
+The CLI has a `describe` command for machine discovery:
+
+```bash
+larm describe                    # full command schema as JSON
+larm describe monitors.list      # single command schema
+```
+
+Always use `--output json` for machine-readable output.
+
+## Source
+
+The CLI is open source: [github.com/larmhq/larm-cli](https://github.com/larmhq/larm-cli)
