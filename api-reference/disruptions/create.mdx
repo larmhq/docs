@@ -1,20 +1,20 @@
 ---
-title: "Create incident"
+title: "Create disruption"
 authMethod: "bearer"
-api: "POST /api/v1/incidents"
-description: "Creates a new incident, optionally publishing to a status page"
+api: "POST /api/v1/disruptions"
+description: "Creates a new disruption, optionally publishing to a status page"
 ---
 
 Requires `incidents:read_write` permission.
 
-Create an incident to communicate a service disruption. Optionally publish to a status page with affected components in the same call.
+Create a disruption to communicate a service issue. Optionally publish to a status page with affected components in the same call.
 
 <ParamField body="title" type="string" required>
-  Incident title (1–255 characters)
+  Disruption title (1–255 characters)
 </ParamField>
 
-<ParamField body="type" type="string" default="incident">
-  `incident` or `maintenance`
+<ParamField body="type" type="string" default="disruption">
+  `disruption` or `maintenance`
 </ParamField>
 
 <ParamField body="impact" type="string" default="major">
@@ -22,7 +22,7 @@ Create an incident to communicate a service disruption. Optionally publish to a 
 </ParamField>
 
 <ParamField body="message" type="string">
-  Initial timeline message. If omitted, the incident is created with a default message.
+  Initial timeline message. If omitted, the disruption is created with a default message.
 </ParamField>
 
 <ParamField body="status_page_id" type="string">
@@ -39,7 +39,7 @@ Create an incident to communicate a service disruption. Optionally publish to a 
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "title": "API outage",
-    "type": "incident",
+    "type": "disruption",
     "status": "investigating",
     "impact": "major",
     "auto_created": false,

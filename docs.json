@@ -62,12 +62,12 @@
             ]
           },
           {
-            "group": "Incidents",
+            "group": "Disruptions",
             "pages": [
-              "api-reference/incidents/list",
-              "api-reference/incidents/get",
-              "api-reference/incidents/create",
-              "api-reference/incidents/update"
+              "api-reference/disruptions/list",
+              "api-reference/disruptions/get",
+              "api-reference/disruptions/create",
+              "api-reference/disruptions/update"
             ]
           },
           {

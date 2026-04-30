@@ -3,19 +3,19 @@ title: "Status pages"
 description: "Public status pages for your services"
 ---
 
-Status pages let your users see what's going on. Each page shows the current state of your components, active incidents with their update timeline, and 90 days of uptime history.
+Status pages let your users see what's going on. Each page shows the current state of your components, active disruptions with their update timeline, and 90 days of uptime history.
 
-Pages are static HTML hosted on a global CDN. Every time an incident is updated or a component changes state, the page is regenerated and pushed to edge nodes worldwide. It stays up even if Larm itself has issues.
+Pages are static HTML hosted on a global CDN. Every time a disruption is updated or a component changes state, the page is regenerated and pushed to edge nodes worldwide. It stays up even if Larm itself has issues.
 
 ## How status pages work
 
-Your status page is a view of your incidents. When you create an incident and post an update that affects a status page component, the page re-renders with the new state. When you resolve the incident, the component goes back to operational and the incident moves to the history section.
+Your status page is a view of your disruptions. When you create a disruption and post an update that affects a status page component, the page re-renders with the new state. When you resolve the disruption, the component goes back to operational and the disruption moves to the history section.
 
-**With monitors:** Monitors create incidents automatically. If a status page component is linked to a monitor, the whole flow is hands-free — outage detected, incident created, status page updated, subscribers notified, and resolved when the monitor recovers.
+**With monitors:** Monitors create disruptions automatically. If a status page component is linked to a monitor, the whole flow is hands-free — outage detected, disruption created, status page updated, subscribers notified, and resolved when the monitor recovers.
 
-**Without monitors:** Create incidents yourself, post updates, choose which components are affected. You're in control of the timing and the messaging.
+**Without monitors:** Create disruptions yourself, post updates, choose which components are affected. You're in control of the timing and the messaging.
 
-You can also hit the **Post update** button directly on a status page to create an incident in one step — it's a shortcut into the same incident workflow.
+You can also hit the **Post update** button directly on a status page to create a disruption in one step — it's a shortcut into the same disruption workflow.
 
 ## Creating a status page
 
@@ -52,7 +52,7 @@ A component can be linked to monitors for automatic updates, or left standalone.
 | **Major outage** | Service is down |
 | **Under maintenance** | Planned maintenance in progress |
 
-Component state is set by incidents. When an incident update marks a component as "major outage", that's what your users see on the status page until the incident is resolved or a newer update changes it.
+Component state is set by disruptions. When a disruption update marks a component as "major outage", that's what your users see on the status page until the disruption is resolved or a newer update changes it.
 
 ## Custom domains
 
@@ -69,7 +69,7 @@ Serve your status page from your own domain (e.g. `status.example.com`). Apex do
 
 ## Email subscribers
 
-Visitors can subscribe to your status page by email. When an incident is updated, subscribers are notified automatically.
+Visitors can subscribe to your status page by email. When a disruption is updated, subscribers are notified automatically.
 
 | Plan | Subscriber limit |
 |---|---|
