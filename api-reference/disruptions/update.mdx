@@ -1,8 +1,8 @@
 ---
-title: "Update incident"
+title: "Update disruption"
 authMethod: "bearer"
-api: "PATCH /api/v1/incidents/{id}"
-description: "Updates an incident — change fields, add a timeline entry, publish to a status page, or resolve"
+api: "PATCH /api/v1/disruptions/{id}"
+description: "Updates a disruption — change fields, add a timeline entry, publish to a status page, or resolve"
 ---
 
 Requires `incidents:read_write` permission.
@@ -10,11 +10,11 @@ Requires `incidents:read_write` permission.
 All fields are optional. A single call can update the title, add a timeline message, publish to a status page, and resolve — all at once.
 
 <ParamField path="id" type="string" required>
-  Incident UUID
+  Disruption UUID
 </ParamField>
 
 <ParamField body="title" type="string">
-  Update the incident title
+  Update the disruption title
 </ParamField>
 
 <ParamField body="impact" type="string">
@@ -22,9 +22,9 @@ All fields are optional. A single call can update the title, add a timeline mess
 </ParamField>
 
 <ParamField body="status" type="string">
-  Advance the incident status. Setting to `resolved` or `completed` resolves the incident.
+  Advance the disruption status. Setting to `resolved` or `completed` resolves the disruption.
 
-  Incident statuses: `investigating`, `identified`, `monitoring`, `resolved`
+  Disruption statuses: `investigating`, `identified`, `monitoring`, `resolved`
 
   Maintenance statuses: `scheduled`, `in_progress`, `completed`
 </ParamField>
@@ -47,7 +47,7 @@ All fields are optional. A single call can update the title, add a timeline mess
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "title": "API outage",
-    "type": "incident",
+    "type": "disruption",
     "status": "resolved",
     "impact": "major",
     "auto_created": false,

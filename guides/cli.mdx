@@ -3,7 +3,7 @@ title: "CLI"
 description: "Manage Larm from your terminal with the official CLI"
 ---
 
-The Larm CLI lets you manage monitors, alerts, status pages, incidents, and webhooks from your terminal. Open source at [github.com/larmhq/larm-cli](https://github.com/larmhq/larm-cli).
+The Larm CLI lets you manage monitors, alerts, status pages, disruptions, and webhooks from your terminal. Open source at [github.com/larmhq/larm-cli](https://github.com/larmhq/larm-cli).
 
 ## Install
 
@@ -79,13 +79,13 @@ larm status-pages create --name "Acme Status" --slug acme-status
 larm components list --status-page-id <id>
 ```
 
-### Incidents
+### Disruptions
 
 ```bash
-larm incidents list
-larm incidents show <id>
-larm incidents create --title "API outage" --impact critical --message "Investigating"
-larm incidents update <id> --status resolved
+larm disruptions list
+larm disruptions show <id>
+larm disruptions create --title "API outage" --impact critical --message "Investigating"
+larm disruptions update <id> --status resolved
 ```
 
 ### Webhooks

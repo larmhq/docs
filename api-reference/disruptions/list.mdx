@@ -1,8 +1,8 @@
 ---
-title: "List incidents"
+title: "List disruptions"
 authMethod: "bearer"
-api: "GET /api/v1/incidents"
-description: "Lists incidents for your organization"
+api: "GET /api/v1/disruptions"
+description: "Lists disruptions for your organization"
 ---
 
 Requires `incidents:read` permission.
@@ -12,7 +12,7 @@ Requires `incidents:read` permission.
 </ParamField>
 
 <ParamField query="type" type="string">
-  Filter by type: `incident` or `maintenance`
+  Filter by type: `disruption` or `maintenance`
 </ParamField>
 
 <ResponseExample>
@@ -22,7 +22,7 @@ Requires `incidents:read` permission.
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "title": "API outage",
-      "type": "incident",
+      "type": "disruption",
       "status": "investigating",
       "impact": "major",
       "auto_created": false,

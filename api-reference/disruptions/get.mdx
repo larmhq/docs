@@ -1,14 +1,14 @@
 ---
-title: "Get incident"
+title: "Get disruption"
 authMethod: "bearer"
-api: "GET /api/v1/incidents/{id}"
-description: "Returns an incident with its timeline and affected components"
+api: "GET /api/v1/disruptions/{id}"
+description: "Returns a disruption with its timeline and affected components"
 ---
 
 Requires `incidents:read` permission.
 
 <ParamField path="id" type="string" required>
-  Incident UUID
+  Disruption UUID
 </ParamField>
 
 <ResponseExample>
@@ -17,7 +17,7 @@ Requires `incidents:read` permission.
   "data": {
     "id": "550e8400-e29b-41d4-a716-446655440000",
     "title": "API outage",
-    "type": "incident",
+    "type": "disruption",
     "status": "identified",
     "impact": "major",
     "auto_created": false,
