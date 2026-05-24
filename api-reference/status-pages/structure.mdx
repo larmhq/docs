@@ -1,0 +1,87 @@
+---
+title: "Replace status page structure"
+authMethod: "bearer"
+api: "PUT /api/v1/status-pages/{id}/structure"
+description: "Atomically replaces the entire components-and-groups tree of a status page"
+---
+
+Requires `status_pages:read_write` permission.
+
+Replaces the page's full structure in a single transaction: creates new entries (omit `id`), updates existing entries by `id`, and deletes any entry not present in the body. Order is taken from the array (0-based position).
+
+<ParamField path="id" type="string" required>
+  Status page ID (UUID)
+</ParamField>
+
+<ParamField body="components" type="object[]" required>
+  Polymorphic tree of `group` and `component` entries. Groups contain components (groups cannot nest). Ungrouped components appear at the top level.
+</ParamField>
+
+### Entry shapes
+
+**Group**
+
+| Field | Type | Notes |
+|---|---|---|
+| `type` | string | Must be `"group"` |
+| `id` | string | Omit to create a new group; provide to update an existing one |
+| `name` | string | Required |
+| `components` | object[] | Components inside this group |
+
+**Component**
+
+| Field | Type | Notes |
+|---|---|---|
+| `type` | string | Must be `"component"` |
+| `id` | string | Omit to create a new component; provide to update an existing one |
+| `name` | string | Required |
+| `description` | string | Optional |
+| `monitors` | object[] | Each entry has `monitor_id` (UUID) and `down_status` (`degraded_performance` \| `partial_outage` \| `major_outage`) |
+
+### Errors
+
+| Status | Reason |
+|---|---|
+| 404 | Status page not found |
+| 422 | Body is missing `components`, an entry has an invalid `type`, or a group is nested inside another group |
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "Acme Status",
+    "slug": "acme",
+    "components": [
+      {
+        "type": "group",
+        "id": "880e8400-e29b-41d4-a716-446655440000",
+        "name": "Backend",
+        "position": 0,
+        "components": [
+          {
+            "type": "component",
+            "id": "770e8400-e29b-41d4-a716-446655440000",
+            "name": "API",
+            "description": null,
+            "position": 0,
+            "monitors": [
+              {
+                "monitor_id": "660e8400-e29b-41d4-a716-446655440000",
+                "down_status": "major_outage"
+              }
+            ],
+            "inserted_at": "2025-03-01T12:00:00Z",
+            "updated_at": "2025-03-01T12:00:00Z"
+          }
+        ],
+        "inserted_at": "2025-03-01T12:00:00Z",
+        "updated_at": "2025-03-01T12:00:00Z"
+      }
+    ],
+    "inserted_at": "2025-03-01T12:00:00Z",
+    "updated_at": "2025-03-01T14:30:00Z"
+  }
+}
+```
+</ResponseExample>

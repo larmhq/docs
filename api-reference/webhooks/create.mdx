@@ -19,7 +19,7 @@ Requires `monitors:read_write` permission.
   Whether the subscription is active
 </ParamField>
 
-The response includes the signing `secret` — **this is only shown once**. Use it to verify webhook payloads via the `X-Larm-Signature` header.
+The response includes the signing `secret` — **this is only shown once**. Larm sends an `x-larm-signature-256` header on every delivery with the value `sha256=<hex>`, where `<hex>` is the lowercase HMAC-SHA256 of the raw JSON body using your secret as the key.
 
 <ResponseExample>
 ```json 201

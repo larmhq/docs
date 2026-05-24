@@ -22,34 +22,21 @@ Accepts any HTTP method (GET, POST, HEAD, etc.). The token is found in your hear
   No `Authorization` header is needed. The token in the URL is the authentication.
 </Note>
 
-## Responses
+## Response
+
+Every call returns `200 {"status": "ok"}`. This is deliberate — invalid tokens, missing monitors, and rate-limited pings all return the same response to prevent token enumeration.
 
 <ResponseExample>
 ```json 200
 {
-  "status": "ok",
-  "state": "up"
-}
-```
-
-```json 404
-{
-  "error": "not_found"
-}
-```
-
-```json 429
-{
-  "error": "rate_limited"
+  "status": "ok"
 }
 ```
 </ResponseExample>
 
-| Status | Description |
-|---|---|
-| 200 | Ping received. `state` is one of `pending`, `up`, `down`, or `stale`. |
-| 404 | Token doesn't match any heartbeat monitor. |
-| 429 | Rate limited — maximum 6 pings per minute per token. |
+## Rate limiting
+
+To bound storage from abusive ping rates, Larm records at most one heartbeat per token within a window of `interval_seconds × 100` milliseconds — roughly 10 pings per expected interval. Pings beyond that within the same window still return `200 {"status": "ok"}` but are not stored. Extra pings never cause an alert.
 
 ## Examples
 

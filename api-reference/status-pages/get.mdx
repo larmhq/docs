@@ -2,7 +2,7 @@
 title: "Get status page"
 authMethod: "bearer"
 api: "GET /api/v1/status-pages/{id}"
-description: "Returns a single status page by ID"
+description: "Returns a single status page by ID, with its full components tree"
 ---
 
 Requires `status_pages:read` permission.
@@ -10,6 +10,10 @@ Requires `status_pages:read` permission.
 <ParamField path="id" type="string" required>
   Status page ID (UUID)
 </ParamField>
+
+The `components` field is a polymorphic tree of `group` and `component` entries, ordered by `position`. Groups contain components (groups cannot nest). Ungrouped components appear at the top level.
+
+To replace the entire tree, use [PUT structure](/api-reference/status-pages/structure). For individual CRUD on components and groups, see the [Components](/api-reference/components/get) and [Component groups](/api-reference/component-groups/get) endpoints.
 
 <ResponseExample>
 ```json 200
@@ -30,10 +34,39 @@ Requires `status_pages:read` permission.
     "url": "https://acme.status.larm.dev",
     "components": [
       {
-        "id": "770e8400-e29b-41d4-a716-446655440000",
-        "monitor_id": "550e8400-e29b-41d4-a716-446655440000",
-        "display_name": "Website",
-        "position": 0
+        "type": "group",
+        "id": "880e8400-e29b-41d4-a716-446655440000",
+        "name": "Backend",
+        "position": 0,
+        "components": [
+          {
+            "type": "component",
+            "id": "770e8400-e29b-41d4-a716-446655440000",
+            "name": "API",
+            "description": "REST API",
+            "position": 0,
+            "monitors": [
+              {
+                "monitor_id": "660e8400-e29b-41d4-a716-446655440000",
+                "down_status": "major_outage"
+              }
+            ],
+            "inserted_at": "2025-03-01T12:00:00Z",
+            "updated_at": "2025-03-01T12:00:00Z"
+          }
+        ],
+        "inserted_at": "2025-03-01T12:00:00Z",
+        "updated_at": "2025-03-01T12:00:00Z"
+      },
+      {
+        "type": "component",
+        "id": "990e8400-e29b-41d4-a716-446655440000",
+        "name": "Marketing site",
+        "description": null,
+        "position": 1,
+        "monitors": [],
+        "inserted_at": "2025-03-01T12:00:00Z",
+        "updated_at": "2025-03-01T12:00:00Z"
       }
     ],
     "inserted_at": "2025-03-01T12:00:00Z",

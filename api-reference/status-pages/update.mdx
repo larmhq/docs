@@ -7,6 +7,8 @@ description: "Updates an existing status page"
 
 Requires `status_pages:read_write` permission. Only include the fields you want to change.
 
+Updates only the page's own fields. To modify components and groups, use the dedicated CRUD endpoints or replace the entire structure with [PUT structure](/api-reference/status-pages/structure). To attach a custom domain, use the custom-domain endpoint (separate from this one).
+
 <ParamField path="id" type="string" required>
   Status page ID (UUID)
 </ParamField>
@@ -16,7 +18,7 @@ Requires `status_pages:read_write` permission. Only include the fields you want 
 </ParamField>
 
 <ParamField body="slug" type="string">
-  URL identifier (3–63 characters, lowercase alphanumeric and hyphens)
+  URL identifier (3–63 characters, lowercase alphanumeric and hyphens; cannot start or end with a hyphen)
 </ParamField>
 
 <ParamField body="description" type="string">
@@ -31,16 +33,24 @@ Requires `status_pages:read_write` permission. Only include the fields you want 
   Brand color in hex format (e.g. `#4F46E5`)
 </ParamField>
 
+<ParamField body="logo_light_url" type="string">
+  URL of the logo to use on light backgrounds
+</ParamField>
+
+<ParamField body="logo_dark_url" type="string">
+  URL of the logo to use on dark backgrounds
+</ParamField>
+
+<ParamField body="show_theme_switcher" type="boolean">
+  Show a light/dark theme switcher on the public page
+</ParamField>
+
 <ParamField body="enabled" type="boolean">
   Whether the page is publicly visible
 </ParamField>
 
 <ParamField body="subscribers_enabled" type="boolean">
   Allow email subscriptions
-</ParamField>
-
-<ParamField body="components" type="object[]">
-  Replace the monitors displayed on the page. This is a full replacement — pass all components you want. Each object has `monitor_id` (UUID, required), `display_name` (string, required), and `position` (integer, required).
 </ParamField>
 
 <ResponseExample>
@@ -60,14 +70,7 @@ Requires `status_pages:read_write` permission. Only include the fields you want 
     "logo_light_url": null,
     "logo_dark_url": null,
     "url": "https://acme.status.larm.dev",
-    "components": [
-      {
-        "id": "770e8400-e29b-41d4-a716-446655440000",
-        "monitor_id": "550e8400-e29b-41d4-a716-446655440000",
-        "display_name": "Website",
-        "position": 0
-      }
-    ],
+    "components": [],
     "inserted_at": "2025-03-01T12:00:00Z",
     "updated_at": "2025-03-01T14:30:00Z"
   }

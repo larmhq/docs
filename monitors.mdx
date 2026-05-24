@@ -11,10 +11,10 @@ These settings apply to all monitor types.
 
 | Setting | Default | Description |
 |---|---|---|
-| **Check interval** | 3 min | How often to run the check (minimum 30s) |
-| **Timeout** | 10s | How long to wait for a response (1s–30s) |
-| **Confirm down** | 1 min | Minutes of consecutive failures before marking as down |
-| **Confirm up** | 3 min | Minutes of consecutive successes before marking as recovered |
+| **Check interval** | 3 min | How often to run the check (minimum varies by plan: 3 min Free, 1 min Pro, 30s Business) |
+| **Timeout** | 10s | How long to wait for a response (1s–60s) |
+| **Confirm down** | 1 min | Minutes the monitor must stay failing before being marked down |
+| **Confirm up** | 3 min | Minutes the monitor must stay passing before being marked recovered |
 
 Confirmation windows help smooth out brief interruptions. Set **Confirm down** to a few minutes if you want to avoid alerts for momentary blips.
 

@@ -7,6 +7,8 @@ description: "Returns all status pages in the organization"
 
 Requires `status_pages:read` permission.
 
+Returns a summary of each status page. The components tree is **not** included in the list response — use [Get status page](/api-reference/status-pages/get) to fetch a single page with its full structure.
+
 <ResponseExample>
 ```json 200
 {
@@ -25,14 +27,6 @@ Requires `status_pages:read` permission.
       "logo_light_url": null,
       "logo_dark_url": null,
       "url": "https://acme.status.larm.dev",
-      "components": [
-        {
-          "id": "770e8400-e29b-41d4-a716-446655440000",
-          "monitor_id": "550e8400-e29b-41d4-a716-446655440000",
-          "display_name": "Website",
-          "position": 0
-        }
-      ],
       "inserted_at": "2025-03-01T12:00:00Z",
       "updated_at": "2025-03-01T12:00:00Z"
     }

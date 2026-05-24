@@ -1,0 +1,30 @@
+---
+title: "Get component group"
+authMethod: "bearer"
+api: "GET /api/v1/status-pages/{status_page_id}/component-groups/{id}"
+description: "Returns a single component group"
+---
+
+Requires `status_pages:read` permission.
+
+<ParamField path="status_page_id" type="string" required>
+  Status page UUID
+</ParamField>
+
+<ParamField path="id" type="string" required>
+  Component group UUID
+</ParamField>
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "id": "880e8400-e29b-41d4-a716-446655440000",
+    "name": "Backend",
+    "position": 0,
+    "inserted_at": "2025-03-01T12:00:00Z",
+    "updated_at": "2025-03-01T12:00:00Z"
+  }
+}
+```
+</ResponseExample>

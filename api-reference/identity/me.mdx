@@ -1,0 +1,21 @@
+---
+title: "Get current organization"
+authMethod: "bearer"
+api: "GET /api/v1/me"
+description: "Returns the organization that the current API key or OAuth token belongs to"
+---
+
+Requires `monitors:read` permission. Useful for confirming which organization a token is scoped to before making writes.
+
+<ResponseExample>
+```json 200
+{
+  "data": {
+    "organization": {
+      "id": 123,
+      "name": "Acme Inc."
+    }
+  }
+}
+```
+</ResponseExample>
