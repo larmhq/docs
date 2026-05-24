@@ -15,7 +15,7 @@ Requires `monitors:read` permission. Uses the **Stats** rate limit bucket (30 re
   Time range. One of: `1h`, `6h`, `24h`, `7d`, `30d`, `90d`.
 </ParamField>
 
-Returns the aggregate p95 response time (averaged across probe locations) and a per-region breakdown sorted by p95 descending. Locations are aggregated to the region level (e.g. `us-east-1` and `us-east-2` collapse to `us-east`).
+Returns the aggregate p95 response time (averaged across regions) and a per-region breakdown sorted by p95 descending.
 
 <ResponseExample>
 ```json 200
