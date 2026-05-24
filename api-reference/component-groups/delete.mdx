@@ -1,0 +1,21 @@
+---
+title: "Delete component group"
+authMethod: "bearer"
+api: "DELETE /api/v1/status-pages/{status_page_id}/component-groups/{id}"
+description: "Deletes a component group"
+---
+
+Requires `status_pages:read_write` permission. Components inside the deleted group are detached and become ungrouped top-level entries on the page.
+
+<ParamField path="status_page_id" type="string" required>
+  Status page UUID
+</ParamField>
+
+<ParamField path="id" type="string" required>
+  Component group UUID
+</ParamField>
+
+<ResponseExample>
+```json 204
+```
+</ResponseExample>

@@ -74,9 +74,21 @@ larm alerts create --name "Slack" --type slack --config '{"webhook_url":"..."}'
 
 ```bash
 larm status-pages list
-larm status-pages show <id>
+larm status-pages show <id>             # renders the components tree
 larm status-pages create --name "Acme Status" --slug acme-status
-larm components list --status-page-id <id>
+```
+
+### Components and groups
+
+```bash
+larm components create --status-page-id <id> --name "API"
+larm components create --status-page-id <id> --name "Database" --group <group-id>
+larm components update <id> --group <group-id>
+
+larm component-groups create --status-page-id <id> --name "Backend"
+larm component-groups show <id>
+larm component-groups update <id> --name "Backend services"
+larm component-groups delete <id>
 ```
 
 ### Disruptions

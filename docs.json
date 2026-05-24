@@ -35,7 +35,7 @@
         "groups": [
           {
             "group": "Overview",
-            "pages": ["api-reference/introduction"]
+            "pages": ["api-reference/introduction", "api-reference/identity/me"]
           },
           {
             "group": "Monitors",
@@ -77,17 +77,26 @@
               "api-reference/status-pages/get",
               "api-reference/status-pages/create",
               "api-reference/status-pages/update",
-              "api-reference/status-pages/delete"
+              "api-reference/status-pages/delete",
+              "api-reference/status-pages/structure"
             ]
           },
           {
             "group": "Components",
             "pages": [
-              "api-reference/components/list",
               "api-reference/components/get",
               "api-reference/components/create",
               "api-reference/components/update",
               "api-reference/components/delete"
+            ]
+          },
+          {
+            "group": "Component groups",
+            "pages": [
+              "api-reference/component-groups/show",
+              "api-reference/component-groups/create",
+              "api-reference/component-groups/update",
+              "api-reference/component-groups/delete"
             ]
           },
           {

@@ -7,12 +7,14 @@ description: "Creates a new status page"
 
 Requires `status_pages:read_write` permission.
 
+Creates the page itself. To add components and groups, use the [Components](/api-reference/components/create) and [Component groups](/api-reference/component-groups/create) endpoints, or replace the entire structure in one call with [PUT structure](/api-reference/status-pages/structure).
+
 <ParamField body="name" type="string" required>
   Page name (1–255 characters)
 </ParamField>
 
 <ParamField body="slug" type="string" required>
-  URL identifier (3–63 characters, lowercase alphanumeric and hyphens)
+  URL identifier (3–63 characters, lowercase alphanumeric and hyphens; cannot start or end with a hyphen)
 </ParamField>
 
 <ParamField body="description" type="string">
@@ -27,16 +29,24 @@ Requires `status_pages:read_write` permission.
   Brand color in hex format (e.g. `#4F46E5`)
 </ParamField>
 
+<ParamField body="logo_light_url" type="string">
+  URL of the logo to use on light backgrounds
+</ParamField>
+
+<ParamField body="logo_dark_url" type="string">
+  URL of the logo to use on dark backgrounds
+</ParamField>
+
+<ParamField body="show_theme_switcher" type="boolean" default={false}>
+  Show a light/dark theme switcher on the public page
+</ParamField>
+
 <ParamField body="enabled" type="boolean" default={false}>
   Whether the page is publicly visible
 </ParamField>
 
 <ParamField body="subscribers_enabled" type="boolean" default={false}>
   Allow email subscriptions
-</ParamField>
-
-<ParamField body="components" type="object[]">
-  Monitors to display on the page. Each object has `monitor_id` (UUID, required), `display_name` (string, required), and `position` (integer, required).
 </ParamField>
 
 <ResponseExample>
@@ -56,14 +66,7 @@ Requires `status_pages:read_write` permission.
     "logo_light_url": null,
     "logo_dark_url": null,
     "url": "https://acme.status.larm.dev",
-    "components": [
-      {
-        "id": "770e8400-e29b-41d4-a716-446655440000",
-        "monitor_id": "550e8400-e29b-41d4-a716-446655440000",
-        "display_name": "Website",
-        "position": 0
-      }
-    ],
+    "components": [],
     "inserted_at": "2025-03-01T12:00:00Z",
     "updated_at": "2025-03-01T12:00:00Z"
   }

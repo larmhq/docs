@@ -13,6 +13,10 @@ Create a disruption to communicate a service issue. Optionally publish to a stat
   Disruption title (1–255 characters)
 </ParamField>
 
+<ParamField body="started_at" type="string" required>
+  When the disruption began (ISO 8601 timestamp, e.g. `2026-03-28T12:00:00Z`)
+</ParamField>
+
 <ParamField body="type" type="string" default="disruption">
   `disruption` or `maintenance`
 </ParamField>
