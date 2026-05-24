@@ -116,6 +116,10 @@
   "navbar": {
     "links": [
       {
+        "label": "Changelog",
+        "href": "/changelog"
+      },
+      {
         "label": "Status",
         "href": "https://larm.status.larm.dev"
       }

@@ -1,0 +1,129 @@
+---
+title: "Changelog"
+description: "New features, improvements, and fixes in Larm"
+---
+
+<Update label="May 2026">
+
+## New
+
+- **Terraform provider.** New `larmhq/larm` provider for managing Larm with Terraform. Resources: `larm_monitor`, `larm_alert_channel`, `larm_webhook_subscription`, and `larm_status_page` (manages the full structure — groups, components, monitor links — atomically as a single transaction).
+
+## CLI
+
+- v0.4.0: `larm component-groups` and a `--group` flag on components let you manage component groups from the terminal; `larm status-pages show` now renders the components tree. Breaking: `larm components list` is removed in v0.4.0 — use `larm status-pages show <id>` instead.
+
+## Disruptions
+
+- "Report disruption" modal on the disruptions list (title, impact, started-at, body, page picker).
+
+## Status pages
+
+- Open Graph and Twitter card images generated automatically for every public page.
+- Visual polish on public pages: centered "Powered by Larm" footer, "Theme" swatch removed from the editor header, open-in-new-tab icon and "View public page" menu next to the status page URL.
+
+## Monitors
+
+- Region labels simplified to `eu-central` instead of `eu-central-1` across the UI.
+- Fast path from the [landing-page response-time tool](https://larm.dev/tools/response-time) to your first monitor: the URL you tested is prefilled at signup and carried into the quickstart.
+
+## Alerts
+
+- "Suggest monitors" modal after creating an alert channel lets you attach it to existing monitors in one step.
+- Retrying a delivery from the notification log now clears the previous error text and stamps the new attempt number.
+
+## Auth & accounts
+
+- Sender address standardized on `hello@larm.dev` for auth, alerts, status-page subscriptions, and invitations.
+- TOTP manual-entry secret no longer renders with stray whitespace.
+
+## Public API
+
+- `/api/v1/monitors/:id/response-times` now aggregates by region (`us-east`) rather than per location (`us-east-1`).
+
+## Marketing
+
+- May blog posts: Dokploy, Railway, SSL certificate expiry, Hetzner, Fly.io.
+- About page reframed as a note from the founder.
+
+</Update>
+
+<Update label="April 2026">
+
+## New
+
+- **MCP server.** Connect Claude Code, Claude Desktop, Cursor, or any other MCP-compatible harness or service to your Larm organization. 12 tools across monitors, alert channels, and disruptions. OAuth 2.1 with PKCE. Available on all plans, including Free.
+- **Larm CLI.** Open-source CLI: `brew install larmhq/tap/larm`. Manage monitors, alerts, status pages, components, disruptions, and webhooks from your terminal. Browser OAuth or API key, `larm describe` for LLM agents, raw `larm api` for any endpoint, table/JSON/`--jq`/`--fields` output. Breaking: `larm incidents` renamed to `larm disruptions` in v0.2.0.
+- **Disruptions.** Open a disruption from the dashboard, link it to one or more status pages, mark per-component severity, post timeline updates, resolve to auto-publish recovery to every linked page.
+- **Public OpenAPI spec** at `/openapi.yaml` covering every v1 endpoint.
+- **Dashboard home** with a live globe of probe activity.
+- **Command palette.** Cmd-K on every authenticated page jumps to monitors, alerts, status pages, settings, billing, and more.
+- **Two-factor authentication (TOTP)** with authenticator-app enrollment and 8 recovery codes.
+- **Passkey sign-in** (WebAuthn) with passkey management in Settings.
+- **OAuth device flow** for CLI and third-party clients, with an organization picker on the verify page.
+- **Display name** on your user profile, surfaced across the dashboard.
+- **Interactive onboarding.** Three steps: add a monitor with live URL verification, attach an alert channel, create a status page.
+- **Analytics consent banner** with Accept / Decline on first sign-in.
+- **Product-update email preference** toggle in Settings.
+
+## Disruptions
+
+- Monitors that go down auto-create a disruption; affected status-page components flip; recovery auto-resolves the disruption.
+- A worst-impact status dot in the dashboard header links to disruptions from every page.
+
+## Status pages
+
+- Public pages auto-refresh when you publish new content — no manual reload.
+- Components organize into collapsible groups; drag to reorder.
+- Status page list redesigned with a 30-day uptime sparkline per page.
+- RSS and Atom feeds for disruptions, surfaced in the Subscribe panel.
+- Color picker for the brand color; logo upload with cancel and remove controls.
+- Visual polish on public pages: gray dot for maintenance state, "Last updated" timestamp removed from the public footer.
+
+## Monitors
+
+- Heartbeat graph on the monitor detail page (expected vs received pings per bucket).
+- Reorderable monitor groups on the list (drag-to-group, collapsible).
+- HTTP monitor secrets: reference with `{{VAR}}` in headers or body; "Verify" runs against the live config with your unsaved secret values.
+- Auto-disable when a monitor stays down for 48 hours or auto-creates more than 10 disruptions in 24 hours, with email warnings before disabling.
+- Uptime bars show downtime duration (e.g. "2m 30s") instead of failed-check counts.
+- Fixed: heartbeat monitors that were created but never pinged now correctly transition to pending and then to down at the first missed deadline.
+
+## Alerts
+
+- Warning banner and bell-slash badge for monitors with no alert channel attached.
+- Weekly digest email to owners listing monitors that have been without an alert channel for 7+ days.
+- SSL certificate expiry thresholds shifted to 28 / 14 / 7 / 1 / 0 days (was 30 / 14 / 7 / 1 / 0).
+
+## Auth & accounts
+
+- Sign-up now rejects emails with consecutive dots (`foo..bar@example.com`); magic-link send failures surface an error instead of silently claiming success.
+
+## Billing
+
+- MCP and REST API write access enabled on the **Free** plan.
+
+## Public API & webhooks
+
+- New endpoints: `GET/POST/PATCH /api/v1/disruptions`, full CRUD on `/api/v1/status-pages/:id/components`, `GET /api/v1/me`.
+- Webhook subscription secrets are encrypted at rest.
+
+## Mobile
+
+- Dashboard home, monitor list and detail, alert channel pages, status page editor, and Settings are now usable on phones (responsive layouts, sticky horizontal nav on Settings, hamburger nav with disruption-status dot, no email-field auto-focus on touch devices).
+
+## Docs
+
+- New guide: [CLI](/guides/cli).
+- New guide: [MCP — connecting Claude Code, Claude Desktop, and Cursor](/guides/mcp).
+- New API reference sections: [Disruptions](/api-reference/disruptions/list) and [Status page components](/api-reference/components/list).
+- [Status pages](/status-pages) docs rewritten with a component-states table and email-subscriber plan limits.
+
+## Marketing
+
+- New landing pages: [larm.dev/mcp](https://larm.dev/mcp) and [larm.dev/cli](https://larm.dev/cli).
+- [Blog launched](https://larm.dev/blog) with RSS. April posts: Multi-probe voting, TTFB, Cron jobs.
+- Shareable response-time tool result page at `larm.dev/tools/response-time/r/:id`.
+- Status pages page rewritten.
+
+</Update>
