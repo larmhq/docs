@@ -1,7 +1,74 @@
 ---
 title: "Changelog"
-description: "New features, improvements, and fixes in Larm"
+description: "New features, improvements and fixes in Larm, the CLI and the public API, by month."
 ---
+
+<Update label="November 2026">
+
+## Public API
+
+- Rate limiting is consistent across the API. Every response carries `x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`, describing the most restrictive limit that applies, including organization limits such as status page changes. A `429` includes `retry-after` and the standard error body.
+- Replacing a status page structure now returns a `422` validation error when a tree entry's `id` isn't a UUID, or doesn't match an existing group or component of that type on the page.
+
+</Update>
+
+<Update label="October 2026">
+
+## Status pages
+
+- **Maintenance.** Start maintenance from the dashboard to mark components as under maintenance on your status pages, post updates, and complete it when you're done. Subscribers are notified the same way as for disruptions. Maintenance is shown in blue, and status page uptime excludes time under maintenance. Checks, alerts and monitor uptime are unaffected.
+
+## Monitors
+
+- Monitor and component uptime are now calculated from elapsed time instead of averaging chart percentages. Time with no data counts as no data rather than 100%.
+
+</Update>
+
+<Update label="September 2026">
+
+## Status pages
+
+- Fixed custom domain verification status in the status page settings.
+
+</Update>
+
+<Update label="August 2026">
+
+## Alerts
+
+- The notification log shows why a delivery failed when you hover over the failed badge.
+- Telegram errors now include Telegram's reason, such as "chat not found". A Telegram channel that returns HTTP 400 is treated as a permanent failure: the channel is disabled and organization owners get an email.
+
+</Update>
+
+<Update label="June 2026">
+
+## Alerts
+
+- Long Discord alerts are trimmed to fit Discord's embed limits instead of being rejected.
+- An alert channel whose destination resolves to a blocked address is disabled and organization owners get an email, the same as for other permanent failures.
+- Fixed a crash when editing a Slack alert channel.
+
+## Status pages
+
+- Subscribers no longer get duplicate emails for a single update.
+- Status page analytics no longer count duplicate page views.
+- Logo URLs are validated when you save a status page.
+
+## Dashboard
+
+- Clearer time labels on charts.
+- Fixed a regression when editing monitors, and one on the dashboard home globe.
+
+## Security
+
+- Security fixes and hardening across the dashboard, probes and outbound requests.
+
+## Marketing
+
+- The [page load checker](https://larm.dev/tools/page-load) shows more detail about each load.
+
+</Update>
 
 <Update label="May 2026">
 
@@ -24,6 +91,8 @@ description: "New features, improvements, and fixes in Larm"
 
 ## Monitors
 
+- The response time chart shades the periods a monitor was down, and can show each location separately or all locations together. It also has an empty state when there's no data yet.
+- The dashboard home globe uses less CPU in Firefox.
 - Region labels simplified to `eu-central` instead of `eu-central-1` across the UI.
 - Fast path from the [landing-page response-time tool](https://larm.dev/tools/response-time) to your first monitor: the URL you tested is prefilled at signup and carried into the quickstart.
 
@@ -39,10 +108,12 @@ description: "New features, improvements, and fixes in Larm"
 
 ## Public API
 
+- Read/write API keys are available on every plan, including Free.
 - `/api/v1/monitors/:id/response-times` now aggregates by region (`us-east`) rather than per location (`us-east-1`).
 
 ## Marketing
 
+- New free [page load checker](https://larm.dev/tools/page-load): a real browser load with LCP, TTFB and a waterfall.
 - May blog posts: Dokploy, Railway, SSL certificate expiry, Hetzner, Fly.io.
 - About page reframed as a note from the founder.
 

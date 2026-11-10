@@ -1,0 +1,150 @@
+---
+title: "Terraform"
+description: "Manage monitors, alert channels, status pages and webhooks as code with the official Terraform provider"
+---
+
+The `larmhq/larm` provider lets you manage Larm with Terraform. It's open source at [github.com/larmhq/terraform-provider-larm](https://github.com/larmhq/terraform-provider-larm), and the full reference for every resource is on the [Terraform Registry](https://registry.terraform.io/providers/larmhq/larm/latest/docs).
+
+<Note>The provider is pre-1.0, and the schema may change in minor releases until 1.0. Pin a minor version, as in the example below.</Note>
+
+## Set up the provider
+
+```hcl
+terraform {
+  required_providers {
+    larm = {
+      source  = "larmhq/larm"
+      version = "~> 0.2.0"
+    }
+  }
+}
+
+provider "larm" {}
+```
+
+The provider authenticates with an API key. Create a **read/write** key in **Settings > API Keys** (write keys are available on every plan) and set it as an environment variable:
+
+```bash
+export LARM_API_KEY="your-api-key"
+```
+
+You can also pass it to the provider as `api_key`, for example from a sensitive variable.
+
+## Resources
+
+| Resource | Manages |
+|---|---|
+| `larm_monitor` | HTTP, TCP, DNS and heartbeat monitors |
+| `larm_alert_channel` | Alert channels, like Slack, email, PagerDuty and webhooks |
+| `larm_status_page` | A status page, including its groups, components and linked monitors |
+| `larm_webhook_subscription` | Webhook subscriptions for monitor events |
+
+## A monitor with an alert channel
+
+```hcl
+resource "larm_alert_channel" "email" {
+  name = "Engineering Team"
+  type = "email"
+
+  email = {
+    recipients = ["oncall@example.com"]
+  }
+}
+
+resource "larm_monitor" "api" {
+  name       = "API"
+  check_type = "http"
+
+  config = jsonencode({
+    url                   = "https://api.example.com/health"
+    method                = "GET"
+    expected_status_codes = [200]
+    follow_redirects      = true
+  })
+
+  alert_channel_ids = [larm_alert_channel.email.id]
+}
+```
+
+`config` holds the check-type-specific settings as JSON, the same fields as in the [API](/api-reference/monitors/create). Use `jsonencode`. Formatting differences in it don't produce a diff.
+
+## A heartbeat monitor
+
+```hcl
+resource "larm_monitor" "nightly_backup" {
+  name       = "Nightly backup"
+  check_type = "heartbeat"
+
+  config = jsonencode({
+    expected_interval  = 86400
+    consecutive_misses = 1
+  })
+}
+
+output "backup_heartbeat_url" {
+  value     = "https://app.larm.dev/api/heartbeat/${larm_monitor.nightly_backup.heartbeat_token}"
+  sensitive = true
+}
+```
+
+For heartbeat monitors, the check interval comes from `expected_interval`, so don't set `interval_seconds`.
+
+## A status page
+
+`components` describes the whole page: groups, components inside them, and the monitors linked to each component. The provider applies the structure as one change.
+
+```hcl
+resource "larm_status_page" "acme" {
+  name          = "Acme Status"
+  slug          = "acme"
+  primary_color = "#E02424"
+
+  components = [
+    {
+      type = "group"
+      name = "Core Services"
+      components = [
+        {
+          name = "API"
+          monitors = [
+            {
+              monitor_id  = larm_monitor.api.id
+              down_status = "major_outage"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type = "component"
+      name = "Email"
+    }
+  ]
+}
+```
+
+## A webhook subscription
+
+```hcl
+resource "larm_webhook_subscription" "ops" {
+  url    = "https://ops.example.com/larm-events"
+  events = ["monitor.state_changed"]
+}
+
+output "ops_signing_secret" {
+  value     = larm_webhook_subscription.ops.secret
+  sensitive = true
+}
+```
+
+Use the secret to verify [webhook signatures](/webhooks).
+
+## Import existing resources
+
+Resources you created in the dashboard can be brought under Terraform with their ID:
+
+```bash
+terraform import larm_monitor.api 00000000-0000-0000-0000-000000000000
+```
+
+The same works for `larm_alert_channel`, `larm_status_page` and `larm_webhook_subscription`.
