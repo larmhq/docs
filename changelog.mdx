@@ -5,10 +5,18 @@ description: "New features, improvements and fixes in Larm, the CLI and the publ
 
 <Update label="November 2026">
 
+## Status pages
+
+- **Markdown on status pages.** Disruption and maintenance updates now support Markdown, so you can add headings, bold, italic, strikethrough, code, lists and links. It shows up on your status page, in the RSS and Atom feeds, and in subscriber emails. Hover **Markdown** by the description field to see the cheatsheet.
+- You can now show uptime with 2, 3 or 4 decimals on your status page, under **Uptime precision** in the status page settings.
+- Uptime is now rounded down, so any amount of downtime will be visible.
+- See more decimals of an uptime percentage when hovering on the status page.
+
 ## Public API
 
-- Rate limiting is consistent across the API. Every response carries `x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`, describing the most restrictive limit that applies, including organization limits such as status page changes. A `429` includes `retry-after` and the standard error body.
+- Responses now consistently contain `x-ratelimit-limit`, `x-ratelimit-remaining` and `x-ratelimit-reset`, and each response gives you the most restrictive limit. A `429` includes `retry-after` and the standard error body.
 - Replacing a status page structure now returns a `422` validation error when a tree entry's `id` isn't a UUID, or doesn't match an existing group or component of that type on the page.
+- Groups with no components now show up in a status page's components tree.
 
 </Update>
 

@@ -54,6 +54,19 @@ A component can be linked to monitors for automatic updates, or left standalone.
 
 Component state is set by disruptions. When a disruption update marks a component as "major outage", that's what your users see on the status page until the disruption is resolved or a newer update changes it.
 
+## Maintenance
+
+Use maintenance to tell visitors that work is in progress on some of your services.
+
+1. Click **Maintenance** on the Disruptions page or on a status page.
+2. Give it a title and a message, pick the status pages to publish to and the affected components on each, and click **Start maintenance**. It starts right away.
+3. Post updates as the work goes on.
+4. Click **Complete** when you're done. The completion is published to every page the maintenance was published to.
+
+While maintenance is in progress, the selected components show as **Under maintenance** in blue, and email subscribers are notified the same way as for disruptions. If a component also has an outage, the outage is still shown.
+
+Maintenance only affects your status pages. Checks, alerts and monitor uptime keep running as normal, and a monitor that goes down during maintenance still creates a disruption. Component uptime on the status page leaves out the time spent under maintenance.
+
 ## Custom domains
 
 <Note>
@@ -73,6 +86,6 @@ Visitors can subscribe to your status page by email. When a disruption is update
 
 | Plan | Subscriber limit |
 |---|---|
-| Free | 100 |
+| Free | Not available |
 | Pro | 1,000 |
 | Business | 10,000 |
